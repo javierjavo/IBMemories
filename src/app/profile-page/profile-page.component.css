@@ -1,0 +1,40 @@
+.mainContainer{
+    position: relative;
+    padding-left: 5%;
+    padding-top: 1%;
+    background-color: #f8fcff;
+    height: 91vh;
+    width: 79vw;
+}
+
+.date{
+    position: relative;
+    width: 400px;
+}
+
+.btn-submit{
+    float: right;
+    right: 15%;
+    width: 65px;
+    height: 40px;
+    border-radius: 60px;
+    background-color: rgb(163, 227, 230);
+}
+
+.Tribu{
+    position: relative;
+    color:gray;
+    size: 2px;
+    float: right;
+    right: 0;
+    top: -5px;
+}
+
+.Squad{
+    position: relative;
+    color:gray;
+    size: 5px;
+    float: left;
+    left: 0;
+    top: 5px;
+}

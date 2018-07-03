@@ -1,4 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
+import {FormControl} from '@angular/forms';
+import {Observable} from 'rxjs';
+import {map, startWith} from 'rxjs/operators';
 
 @Component({
   selector: 'app-profile-page',
@@ -6,26 +9,30 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./profile-page.component.css']
 })
 export class ProfilePageComponent implements OnInit {
+  name = '';
+  lastname = '';
+  IBM_date;
+  birthday;
+  myControl = new FormControl();
+  squads = [{name:'One',tribu:"one"}, {name:'Two',tribu:"Two"}, {name:'Three',tribu:"Three"}]; //colect from db2 by python with http request
+  filteredOptions: Observable<any[]>;
 
-  constructor() {
+  constructor() { 
   }
   
   ngOnInit() {
+    this.filteredOptions = this.myControl.valueChanges.pipe(
+      startWith(''),
+      map(value => this._filter(value))
+    );
   }
 
-  mensaje(){
-    var request = require('request'); //bash: npm install request
-    // URL for request POST /message
-    var url = 'https://foo.chat-api.com/message?token=83763g87x';
-    var data = {
-        phone: '523332558987', // Receivers phone
-        body: 'Hello, Andrew!', // Сообщение
-    };
-    // Send a request
-    request({
-        url: url,
-        method: "POST",
-        json: data
-    });
+  private _filter(value: string): any[] {
+    const filterValue = value.toLowerCase();
+    return this.squads.filter(option => option.name.toLowerCase().indexOf(filterValue) === 0);
+  }
+  
+  messaje(){
+    alert(this.IBM_date);
   }
 }
