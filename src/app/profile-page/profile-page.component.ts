@@ -14,7 +14,9 @@ export class ProfilePageComponent implements OnInit {
   IBM_date;
   birthday;
   myControl = new FormControl();
-  squads = [{name:'One',tribu:"one"}, {name:'Two',tribu:"Two"}, {name:'Three',tribu:"Three"}]; //colect from db2 by python with http request
+  squads = [
+    {name:'One',tribu:"one"},{name:'Two',tribu:"Two"}, {name:'Three',tribu:"Three"}
+  ]; //colect from db2 by python with http request
   filteredOptions: Observable<any[]>;
 
   constructor() { 

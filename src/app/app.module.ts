@@ -14,6 +14,7 @@ import {MatDatepickerModule} from '@angular/material/datepicker';
 import { ProfilePageComponent } from './profile-page/profile-page.component';
 import { CalendaryPageComponent } from './calendary-page/calendary-page.component';
 import { NotificationsPageComponent } from './notifications-page/notifications-page.component';
+import { CookieService } from 'ngx-cookie-service';
 
 const appRoutes:Routes = [
   { path:'profile-page', component:ProfilePageComponent }, //profile
@@ -34,7 +35,7 @@ const appRoutes:Routes = [
     MatCheckboxModule, LayoutModule, MatToolbarModule, MatSidenavModule, MatIconModule, MatListModule,MatInputModule,FormsModule,
     MatNativeDateModule, MatAutocompleteModule, ReactiveFormsModule
   ],
-  providers: [],
+  providers: [ CookieService ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

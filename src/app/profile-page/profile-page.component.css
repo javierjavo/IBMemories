@@ -1,10 +1,12 @@
 .mainContainer{
     position: relative;
-    padding-left: 5%;
-    padding-top: 1%;
+    margin: 5%;
+    padding: 5%;
+    left: 10%;
+    top: 0%;
     background-color: #f8fcff;
-    height: 91vh;
-    width: 79vw;
+    height: 55vh;
+    width: 50vw;
 }
 
 .date{
@@ -24,17 +26,17 @@
 .Tribu{
     position: relative;
     color:gray;
-    size: 2px;
+    font-size: 12px;
     float: right;
     right: 0;
-    top: -5px;
+    top: 10px;
 }
 
 .Squad{
     position: relative;
-    color:gray;
-    size: 5px;
+    color:rgb(65, 63, 63);
+    font-size: 16px;
     float: left;
     left: 0;
-    top: 5px;
+    top: 10px;
 }

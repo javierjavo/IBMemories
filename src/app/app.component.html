@@ -1,3 +1,5 @@
 <!--The content below is only a placeholder and can be replaced.-->
-<my-nav>
-</my-nav>
+<div *ngIf="!logged()">
+    <button mat-button class="btn-submit" (click)="login()" >Login</button>
+</div>
+<my-nav *ngIf="logged()"></my-nav>
