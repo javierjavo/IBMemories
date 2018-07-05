@@ -10,6 +10,8 @@ import { MatSnackBar } from '@angular/material';
 
 export class AppComponent {
   title = 'app';
+  user="";
+  passwd="";
 
   constructor(private cookie: CookieService, public snackBar: MatSnackBar){ }
 
