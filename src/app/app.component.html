@@ -1,5 +1,20 @@
 <!--The content below is only a placeholder and can be replaced.-->
-<div *ngIf="!logged()">
-    <button mat-button class="btn-submit" (click)="login()" >Login</button>
+<div class="mainContainer" *ngIf="!logged()">
+    <div class="main-div">
+        <mat-card class="z-depth center" flex="50" >
+            <div align="center">
+                <img width="400" height="300" class="logo" src="../assets/IBM.png" alt="IBM" >
+                <form class="example-form">
+                    <mat-form-field class="example-full-width">
+                        <input matInput placeholder="Email" value="">
+                    </mat-form-field> 
+                    <mat-form-field class="example-full-width">
+                        <input matInput type="password" placeholder="Password" value="">
+                    </mat-form-field>
+                    <button mat-button class="btn-submit" (click)="login()" >Login</button>
+                </form>
+            </div>
+        </mat-card>
+    </div>
 </div>
 <my-nav *ngIf="logged()"></my-nav>

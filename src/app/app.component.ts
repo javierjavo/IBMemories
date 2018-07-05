@@ -1,18 +1,23 @@
 import { Component } from '@angular/core';
 import { CookieService } from 'ngx-cookie-service';
+import { MatSnackBar } from '@angular/material';
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css']
 })
+
 export class AppComponent {
   title = 'app';
 
-  constructor(private cookie: CookieService){ }
+  constructor(private cookie: CookieService, public snackBar: MatSnackBar){ }
 
   login(){
     this.cookie.set("login","1");
+    this.snackBar.open("message", "action", {
+      duration: 2000,
+    });
   }
 
   logged(){

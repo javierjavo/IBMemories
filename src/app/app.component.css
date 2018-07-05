@@ -1,10 +1,58 @@
 @import "~@angular/material/prebuilt-themes/indigo-pink.css";
 
+.mainContainer{
+    position: relative;
+    width: 100vw;
+    height: 100vh;
+    background-image: url("../assets/fondo7.jpg");
+    background-repeat: cover;
+    background-size: 100% 190%;
+}
+
 .example-form-field {
     width: 200px;
 }
 
 .btn-submit{
-    background-color: cadetblue;
+    position: relative;
+    margin:auto;
+    top: 30px;
+    margin-bottom: 10px;
+    background-color: rgb(70, 133, 214);
     border-radius: 50px;
+    width: 70%;
+    color: snow;
 }
+
+.logo{
+    position: relative;
+    top:-60px;
+    border-radius: 20px;
+    margin-bottom: -50px;
+}
+
+.center{
+    width: 50%;
+    margin: 0px auto;
+    background-color: rgba(255, 255, 255, 0.85);
+    border-radius: 20px;
+  }
+  
+  .main-div{
+    height: 90vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .example-form {
+    position: relative;
+    min-width: 150px;
+    max-width: 500px;
+    width: 100%;
+    top:-80px;
+  }
+  
+  .example-full-width {
+    width: 100%;
+  }

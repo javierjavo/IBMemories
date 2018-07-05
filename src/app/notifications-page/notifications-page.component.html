@@ -1,3 +1,18 @@
-<p>
-  notifications-page works!
-</p>
+<mat-grid-list *ngIf="!editando" cols="4" rowHeight="1:1">
+  <mat-grid-tile class="fondo" *ngFor="let emt of evnts" (click)="goToPlan(emt)">
+    <mat-card>
+      <img src={{emt.url}} alt="imagen">
+      <h3>{{emt.type}}</h3>
+      <h5>{{emt.name}}</h5>
+      <h6>{{emt.date}}</h6>
+    </mat-card>
+  </mat-grid-tile>
+  <button class="btn-addEvent" mat-icon-button (click)="addEvent()">+</button>
+</mat-grid-list>
+
+<mat-card class="fondo" *ngIf="editando">
+  
+  <!-- quien compra las cosas, voluntario -->
+  <!-- lista que se va a comprar { que, status (checkbox), } -->
+  <!-- mensajes al celebrado -->
+</mat-card>

@@ -1,0 +1,78 @@
+mat-grid-list{
+    position: relative;
+    height: auto;
+}
+mat-grid-tile {
+    background-image: url("../../assets/fondo5.jpg");
+    background-repeat: cover;
+    background-size: 100% 100%;
+    -webkit-transition: background-image .5s ease-in-out;
+    transition: background-image .5s ease-in-out;
+}
+mat-grid-tile:hover{
+    cursor: pointer;
+    background-image: url("../../assets/fondo4.jpg");
+    background-repeat: cover;
+    background-size: 100% 100%;
+}
+.fondo{
+    -webkit-transition: background-image .5s ease-in-out;
+    transition: background-image .5s ease-in-out;
+}
+mat-card{
+    background-color: rgba(255, 255, 255, 0.9);
+}
+
+.btnBack{
+    position: fixed;
+    color: rgb(0, 0, 0);
+    font-size: 25px;
+    background-color: transparent;
+    border: 0;
+}
+.iconBack{
+    position: relative;
+    color: rgb(0, 0, 0);
+    font-size: 80px;
+    top:-20px;
+    left: 20px;
+}
+.btn-addEvent{
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    width: 80px;
+    height: 80px;
+    color: rgb(0, 0, 0);
+    font-size: 50px;
+    background-color: rgb(92, 173, 156);
+}
+.btn-addEvent:hover{
+    background-color: rgb(117, 214, 193);
+}
+
+.center{
+    width: 90%;
+    margin: 0px auto;
+    background-color: rgba(255, 255, 255, 0.85);
+    border-radius: 20px;
+  }
+  
+  .main-div{
+    height: 80vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .example-form {
+    position: relative;
+    min-width: 150px;
+    max-width: 500px;
+    width: 100%;
+    top:0px;
+  }
+  
+  .example-full-width {
+    width: 100%;
+  }
