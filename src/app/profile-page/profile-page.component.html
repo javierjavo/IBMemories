@@ -11,8 +11,8 @@
     </form>
 
     <mat-form-field class="date example-form-field">
-        <input matInput type="text" placeholder="First name" [(ngModel)]="value">
-        <button mat-button *ngIf="value" matSuffix mat-icon-button aria-label="Clear" (click)="value=''">
+        <input matInput type="text" placeholder="First name" [(ngModel)]="name">
+        <button mat-button *ngIf="name" matSuffix mat-icon-button aria-label="Clear" (click)="name=''">
             <mat-icon>close</mat-icon>
         </button>
     </mat-form-field> <br>
@@ -27,13 +27,13 @@
     <mat-form-field class="date" align="center">
         <input matInput [matDatepicker]="picker1" placeholder="when did you start you start your adventure in IBM?" [(ngModel)]="IBM_date" >
         <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
-        <mat-datepicker #picker1 startView="year" [startAt]="startDate"></mat-datepicker>
+        <mat-datepicker #picker1 startView="year" ></mat-datepicker>
     </mat-form-field> <br>
 
     <mat-form-field class="date">
         <input matInput [matDatepicker]="picker2" placeholder="when is your birthday" [(ngModel)]="birthday">
         <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
-        <mat-datepicker #picker2 startView="year" [startAt]="startDate"></mat-datepicker>
+        <mat-datepicker #picker2 startView="year" ></mat-datepicker>
     </mat-form-field> <br>
     <button mat-button class="btn-submit" (click)="messaje()" >Save</button>
 </div>
