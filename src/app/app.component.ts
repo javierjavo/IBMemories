@@ -1,6 +1,7 @@
-import { Component } from '@angular/core';
+import { Component, Injectable } from '@angular/core';
 import { CookieService } from 'ngx-cookie-service';
-import { MatSnackBar } from '@angular/material';
+import { HttpClient } from '@angular/common/http';
+import { MatSnackBar, throwMatDuplicatedDrawerError } from '@angular/material';
 
 @Component({
   selector: 'app-root',
@@ -8,18 +9,32 @@ import { MatSnackBar } from '@angular/material';
   styleUrls: ['./app.component.css']
 })
 
+@Injectable()
 export class AppComponent {
   title = 'app';
   user="";
   passwd="";
 
-  constructor(private cookie: CookieService, public snackBar: MatSnackBar){ }
+  constructor(private cookie: CookieService, public snackBar: MatSnackBar, private http: HttpClient){ }
 
   login(){
-    this.cookie.set("login","1");
-    this.snackBar.open("message", "action", {
-      duration: 2000,
-    });
+    var params = {
+      type:'login',
+      user: this.user, 
+      pass: this.passwd
+    }
+
+    this.http.post('http://localhost:3000/q',params)
+    .subscribe(
+      res => {
+        if (res['data'] == "pass"){
+          this.cookie.set("login",this.user);
+          this.snackBar.open("Welcome", params['user'] , {
+            duration: 2000,
+          });
+        }
+      }
+    )
   }
 
   logged(){

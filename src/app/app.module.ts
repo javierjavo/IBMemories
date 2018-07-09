@@ -1,14 +1,16 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { RouterModule , Routes } from '@angular/router';
-import {FormsModule, ReactiveFormsModule} from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { HttpClientModule } from '@angular/common/http';
 
 import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MyNavComponent } from './my-nav/my-nav.component';
 import { LayoutModule } from '@angular/cdk/layout';
-import {MatGridListModule} from '@angular/material/grid-list';
-import {MatCardModule} from '@angular/material/card';
+import { MatGridListModule } from '@angular/material/grid-list';
+import { MatCardModule } from '@angular/material/card';
+import {MatSlideToggleModule} from '@angular/material/slide-toggle';
 import { MatButtonModule, MatCheckboxModule, MatToolbarModule, MatSidenavModule, MatIconModule, MatListModule, 
 MatFormFieldModule, MatInputModule, MatNativeDateModule, MatAutocompleteModule} from '@angular/material';
 
@@ -19,7 +21,6 @@ import { CalendaryPageComponent } from './calendary-page/calendary-page.componen
 import { NotificationsPageComponent } from './notifications-page/notifications-page.component';
 import { CookieService } from 'ngx-cookie-service';
 import {MatSnackBarModule} from '@angular/material/snack-bar';
-import { PlanningCenterComponent } from './planning-center/planning-center.component';
 
 const appRoutes:Routes = [
   { path:'profile-page', component:ProfilePageComponent }, //profile
@@ -33,13 +34,13 @@ const appRoutes:Routes = [
     MyNavComponent,
     ProfilePageComponent,
     CalendaryPageComponent,
-    NotificationsPageComponent,
-    PlanningCenterComponent
+    NotificationsPageComponent
   ],
   imports: [
     RouterModule.forRoot(appRoutes), BrowserModule, BrowserAnimationsModule, MatButtonModule, MatDatepickerModule,MatFormFieldModule,
     MatCheckboxModule, LayoutModule, MatToolbarModule, MatSidenavModule, MatIconModule, MatListModule,MatInputModule,FormsModule,
-    MatNativeDateModule, MatAutocompleteModule, ReactiveFormsModule, MatGridListModule, MatCardModule, MatSnackBarModule
+    MatNativeDateModule, MatAutocompleteModule, ReactiveFormsModule, MatGridListModule, MatCardModule, MatSnackBarModule, 
+    HttpClientModule, MatSlideToggleModule
   ],
   providers: [ CookieService ],
   bootstrap: [AppComponent]

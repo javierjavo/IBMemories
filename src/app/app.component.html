@@ -6,10 +6,10 @@
                 <img width="400" height="300" class="logo" src="../assets/IBM.png" alt="IBM" >
                 <form class="example-form">
                     <mat-form-field class="example-full-width">
-                        <input matInput placeholder="Email" value="">
+                        <input matInput placeholder="Email" [(ngModel)]="user" [ngModelOptions]="{standalone: true}">
                     </mat-form-field> 
                     <mat-form-field class="example-full-width">
-                        <input matInput type="password" placeholder="Password" value="">
+                        <input matInput type="password" placeholder="Password" [(ngModel)]="passwd" [ngModelOptions]="{standalone: true}">
                     </mat-form-field>
                     <button mat-button class="btn-submit" (click)="login()" >Login</button>
                 </form>
