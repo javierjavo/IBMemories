@@ -10,9 +10,11 @@ import { MyNavComponent } from './my-nav/my-nav.component';
 import { LayoutModule } from '@angular/cdk/layout';
 import { MatGridListModule } from '@angular/material/grid-list';
 import { MatCardModule } from '@angular/material/card';
-import {MatSlideToggleModule} from '@angular/material/slide-toggle';
+import { MatSlideToggleModule } from '@angular/material/slide-toggle';
+import { MatExpansionModule } from '@angular/material/expansion';
+import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatButtonModule, MatCheckboxModule, MatToolbarModule, MatSidenavModule, MatIconModule, MatListModule, 
-MatFormFieldModule, MatInputModule, MatNativeDateModule, MatAutocompleteModule} from '@angular/material';
+ MatInputModule, MatNativeDateModule, MatAutocompleteModule} from '@angular/material';
 
 
 import {MatDatepickerModule} from '@angular/material/datepicker';
@@ -40,7 +42,7 @@ const appRoutes:Routes = [
     RouterModule.forRoot(appRoutes), BrowserModule, BrowserAnimationsModule, MatButtonModule, MatDatepickerModule,MatFormFieldModule,
     MatCheckboxModule, LayoutModule, MatToolbarModule, MatSidenavModule, MatIconModule, MatListModule,MatInputModule,FormsModule,
     MatNativeDateModule, MatAutocompleteModule, ReactiveFormsModule, MatGridListModule, MatCardModule, MatSnackBarModule, 
-    HttpClientModule, MatSlideToggleModule
+    HttpClientModule, MatSlideToggleModule, MatExpansionModule
   ],
   providers: [ CookieService ],
   bootstrap: [AppComponent]

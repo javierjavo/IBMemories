@@ -1,51 +1,67 @@
 import { Component, OnInit } from '@angular/core';
 import { CookieService } from 'ngx-cookie-service';
+import { HttpClient } from '@angular/common/http';
+import { MatSnackBar, throwMatDuplicatedDrawerError } from '@angular/material';
+import { FormControl } from '@angular/forms';
+import { Observable } from 'rxjs';
+import { map, startWith } from 'rxjs/operators';
+
+interface target {
+  id:number,
+  list:any,
+  name:string,
+  type:string,
+  date:any,
+  custom:string
+};
 
 @Component({
   selector: 'app-notifications-page',
   templateUrl: './notifications-page.component.html',
   styleUrls: ['./notifications-page.component.css']
 })
+
 export class NotificationsPageComponent implements OnInit {
   editando:boolean = false;
-  selected = {
-    id:0,
-    url:"",
-    name:"",
-    type:"",
-    date:"",
-  };
+  selected:target;
+  evnts:[target];
+  date;
+  type = [
+    {name:'Birthday'},{name:'casual meeting'}, {name:'Farewell'}
+  ];
+  filteredOptions: Observable<any[]>;
+  myControl = new FormControl();
 
-  evnts = [{
-    id:1,
-    url:"https://picsum.photos/180/80?image=0",
-    name:"name",
-    type:"Birthday",
-    date:"Date",
-  },{
-    id:2,
-    url:"https://picsum.photos/180/80?image=1",
-    name:"name",
-    type:"Birthday",
-    date:"Date",
-  },{
-    id:3,
-    url:"https://picsum.photos/180/80?image=2",
-    name:"name",
-    type:"Birthday",
-    date:"Date",
-  },{
-    id:4,
-    url:"https://picsum.photos/180/80?image=3",
-    name:"name",
-    type:"Birthday",
-    date:"Date",
-  }];
-
-  constructor() {
+  constructor(private cookie: CookieService, public snackBar: MatSnackBar, private http: HttpClient) {
   }
 
   ngOnInit() {
+    let params = {
+      type:'events',
+      mail: this.cookie.get('login')
+    }
+    this.http.post('http://localhost:3000/q',params)
+    .subscribe(
+      res => {
+        if (res['error'] == "none"){
+          this.evnts = res['data'];
+        }
+        else
+          this.snackBar.open(res['error'], 'ok' , {
+            duration: 1000,
+          });
+      }
+    )
+
+    this.filteredOptions = this.myControl.valueChanges.pipe(
+      startWith(''),
+      map(value => this._filter(value))
+    );
+  }
+
+  private _filter(value: string): any[] {
+    const filterValue = value.toLowerCase();
+    return this.type.filter(option => option.name.toLowerCase().indexOf(filterValue) === 0);
   }
 
   goToPlan(selected){
@@ -56,10 +72,11 @@ export class NotificationsPageComponent implements OnInit {
   addEvent(){
     let newEvent = {
       id:5,
-      url:"https://picsum.photos/180/80?image=4",
+      list:'penguins',
       name:"name",
       type:"Birthday",
       date:"Date",
+      custom:'none'
     };
     this.evnts.push(newEvent);
   }

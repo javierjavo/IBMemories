@@ -1,6 +1,6 @@
 mat-grid-list{
     position: relative;
-    height: auto;
+    height: 100%;
 }
 mat-grid-tile {
     background-image: url("../../assets/fondo5.jpg");
@@ -15,27 +15,31 @@ mat-grid-tile:hover{
     background-repeat: cover;
     background-size: 100% 100%;
 }
-.fondo{
+.background{
     -webkit-transition: background-image .5s ease-in-out;
     transition: background-image .5s ease-in-out;
 }
-mat-card{
-    background-color: rgba(255, 255, 255, 0.9);
-}
-
-.btnBack{
-    position: fixed;
-    color: rgb(0, 0, 0);
-    font-size: 25px;
-    background-color: transparent;
-    border: 0;
-}
-.iconBack{
+.miniCard{
     position: relative;
-    color: rgb(0, 0, 0);
-    font-size: 80px;
-    top:-20px;
-    left: 20px;
+    padding: 10px;
+    width: 70%;
+    height: 70%;
+    background-color: rgba(231, 231, 231, 0.9);
+}
+.p1{
+    position: absolute;
+    font-size: 4vw;
+}
+.p2{
+    position: absolute;
+    font-size: 2.5vw;
+    top: 5vw;
+}
+.p3{
+    position: absolute;
+    font-size: 2vw;
+    right: 10px;
+    bottom: 10px;
 }
 .btn-addEvent{
     position: fixed;
@@ -49,6 +53,32 @@ mat-card{
 }
 .btn-addEvent:hover{
     background-color: rgb(117, 214, 193);
+}
+
+.editor{
+    position: absolute;
+    padding: 10px;
+    width: 100vh;
+    height: 100vw;
+    background-color: rgba(255, 0, 0, 0.9);
+}
+.date{
+    position: relative;
+    width: 400px;
+}
+.btnBack{
+    position: fixed;
+    color: rgb(0, 0, 0);
+    font-size: 25px;
+    background-color: transparent;
+    border: 0;
+}
+.iconBack{
+    position: relative;
+    color: rgb(0, 0, 0);
+    font-size: 80px;
+    top:-20px;
+    left: 20px;
 }
 
 .center{

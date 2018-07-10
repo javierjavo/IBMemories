@@ -14,6 +14,60 @@ app.use(function(req, res, next) {
     next();
 })
 
+function getSquadList(squad){
+    /* get list attached at that name*/
+    let squads = {
+        penguins:['poncho','enrique','gus','lalo','carlos','brandon','javier'],
+        seals:["chingo de rasita"]
+    }
+    return squads[squad];
+}
+
+function getEventFor(myself){
+    /* la asignacion manual se colecta de una db */
+    let evnts = [{
+        id:1,
+        list:"penguins",
+        name:"name",
+        type:"Birthday",
+        date:"Date",
+        custom:"yes"
+      },{
+        id:2,
+        list:"penguins",
+        name:"name",
+        type:"Birthday",
+        date:"Date",
+        custom:"no"
+      },{
+        id:3,
+        list:"penguins",
+        name:"name",
+        type:"Birthday",
+        date:"Date",
+        custom:"no"
+      },{
+        id:4,
+        list:['javier','pepe','toño'],
+        name:"name",
+        type:"Birthday",
+        date:"Date",
+        custom:"yes"
+      }];
+    //
+
+    eventResp = [];
+    evnts.forEach(x => {
+        let list = (typeof x.list == "string" || x.list instanceof String)?getSquadList(x.list):x.list;
+        list.forEach(user=>{
+            if(user == myself){
+                eventResp.push(x);
+            }
+        });
+    }); 
+    return eventResp;
+}
+
 app.post("/q", function (req, res) {
     let s = req.body['type'];
     let resp = {'error':"connection refused"};
@@ -25,6 +79,7 @@ app.post("/q", function (req, res) {
                 'data':logStatus,
                 'error':"none"
             }
+            delete logStatus;
             break;
         case 'update':
             let mail = req.body['mail'];
@@ -42,12 +97,13 @@ app.post("/q", function (req, res) {
                 'status':'update has finished success correctly',
                 'error':"none"
             }
+            delete mail,data;
             break;
         case 'getAll':
             //take data from db
-            let squad = "penguins",
-            name = req.body['mail'],
-            lName = req.body['mail'];
+            let squad = "penguins";
+            let name = req.body['mail'];
+            let lName = req.body['mail'];
             resp = {
                 'squad':squad,
                 'name':name,
@@ -57,6 +113,17 @@ app.post("/q", function (req, res) {
                 'share':true,
                 'error':"none"
             }
+            delete squad,name,lName;
+            break;
+        case 'events':
+            let maile = req.body['mail'];
+            let ev = [] 
+            ev = getEventFor(maile);
+            resp = {
+                data:ev,
+                error:"none"
+            }
+            delete maile,ev;
             break;
         default:
             resp = {'error':"command none found"}

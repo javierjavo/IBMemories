@@ -1,17 +1,58 @@
 <mat-grid-list *ngIf="!editando" cols="4" rowHeight="1:1">
-  <mat-grid-tile class="fondo" *ngFor="let emt of evnts" (click)="goToPlan(emt)">
-    <mat-card>
-      <img src={{emt.url}} alt="imagen">
-      <h3>{{emt.type}}</h3>
-      <h5>{{emt.name}}</h5>
-      <h6>{{emt.date}}</h6>
+  <mat-grid-tile class="background" *ngFor="let emt of evnts" (click)="goToPlan(emt)">
+    <mat-card class="miniCard">
+      <p class="p1">{{emt.type}}</p>
+      <p class="p2">{{emt.name}}</p>
+      <p class="p3">{{emt.date}}</p>
     </mat-card>
   </mat-grid-tile>
   <button class="btn-addEvent" mat-icon-button (click)="addEvent()">+</button>
 </mat-grid-list>
 
-<mat-card class="fondo" *ngIf="editando">
-  <!-- quien compra las cosas, voluntario -->
-  <!-- lista que se va a comprar { que, status (checkbox), } -->
-  <!-- mensajes al celebrado -->
-</mat-card>
+<mat-grid-list *ngIf="editando" cols="3" rowHeight="2:1">
+  <mat-accordion> 
+    <mat-expansion-panel  *ngIf="selected.custom=='yes'">
+      <mat-expansion-panel-header>
+        <mat-panel-title>
+          Event Information
+        </mat-panel-title>
+        <mat-panel-description>
+          change the information, Date, name, ...
+        </mat-panel-description>
+      </mat-expansion-panel-header>
+
+      <mat-form-field class="example-full-width">
+          <input type="text" placeholder="type" aria-label="Number" matInput [formControl]="myControl" [matAutocomplete]="auto" [(ngModel)]="sSquad">
+          <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete">
+          <mat-option *ngFor="let option of filteredOptions | async" [value]="option.name">
+              <B>{{option.name}}</B>
+          </mat-option>
+          </mat-autocomplete>
+      </mat-form-field>
+
+      <mat-form-field>
+        <input matInput placeholder="Name">
+      </mat-form-field>
+      <mat-form-field class="date">
+          <input matInput [matDatepicker]="picker2" placeholder="when is the Event?" [(ngModel)]="date">
+          <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
+          <mat-datepicker #picker2 startView="year" ></mat-datepicker>
+      </mat-form-field> 
+    </mat-expansion-panel>
+
+    <mat-expansion-panel (opened)="panelOpenState = true"
+                        (closed)="panelOpenState = false">
+      <mat-expansion-panel-header>
+        <mat-panel-title>
+          Self aware panel
+        </mat-panel-title>
+        <mat-panel-description>
+          Currently I am {{panelOpenState ? 'open' : 'closed'}}
+        </mat-panel-description>
+      </mat-expansion-panel-header>
+      <p>I'm visible because I am open</p>
+    </mat-expansion-panel>
+    <button mat-button class="btn-submit" (click)="alert('holi')">Save</button>
+    
+  </mat-accordion>
+</mat-grid-list>
