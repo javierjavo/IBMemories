@@ -88,12 +88,25 @@ mat-grid-tile:hover{
 }
 
 .center{
-    width: 90%;
+    width: 220px;
+    height: 50px;
     margin: 0px auto;
-    background-color: rgba(255, 255, 255, 0.85);
-    border-radius: 20px;
+    top: 30px;
+    background-color: transparent;
+    border-radius: 10px;
   }
   
+.center > button {
+    width: 100px;
+    height: 40px;
+    margin:5px;
+    border-radius: 10px;
+    background-color: rgb(99, 140, 228);
+    color: white;
+    text-shadow: 1px 1px 5px rgb(0, 0, 0);
+    border: 2px solid rgb(13, 33, 63);
+}
+
   .main-div{
     height: 80vh;
     display: flex;

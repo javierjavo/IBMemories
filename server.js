@@ -117,7 +117,7 @@ app.post("/q", function (req, res) {
             break;
         case 'getPersonList':
             let filterValueL = req.body['filterValue'];
-            db = ["a",'s','test','t','e','s','t']
+            db = ['test,','t,','e,','s,','t,']
             resp = {
                 data: db.filter(option => option.toLowerCase().indexOf(filterValueL) === 0),
                 'error':"none"
@@ -125,7 +125,7 @@ app.post("/q", function (req, res) {
             break;
         case 'getSquadList':
             let filterValueS = req.body['filterValue'];
-            db = ["v",'a','l','u','e','s','q']
+            db = ["v,",'a,','l,','u,','e,','s,','q,']
             resp = {
                 data: db.filter(option => option.toLowerCase().indexOf(filterValueS) === 0),
                 'error':"none"

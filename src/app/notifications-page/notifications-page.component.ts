@@ -22,16 +22,15 @@ interface target {
 })
 
 export class NotificationsPageComponent implements OnInit {
-  type=[''];
-  eventlist;
+  type:any[];
+  eventListView;
+  eventList = [];
   eventType;
   customL:boolean = false;
   editando:boolean = false;
   selected:target;
   evnts:[target];
   date;
-  filteredOptions: Observable<any[]>;
-  myControl = new FormControl();
 
   constructor(private cookie: CookieService, public snackBar: MatSnackBar, private http: HttpClient) {
   }
@@ -53,35 +52,35 @@ export class NotificationsPageComponent implements OnInit {
           });
       }
     )
-
-    this.filteredOptions = this.myControl.valueChanges.pipe(
-      startWith(''),
-      map(value => this._filter(value))
-    );
+    this.filter('');
   }
 
-  private _filter(value: string): any[] {
+  filter(value: string) {
+    if (value.indexOf(',') !== -1){
+      this.eventList.push(value);
+      this.eventListView = "";
+      value = "";
+      console.log(this.eventList);
+    }
+
     const filterValue = value.toLowerCase();
     let params = {
       type: this.customL ?'getSquadList':'getPersonList',
       filterValue
     }
-    let s = new Promise(function(res,reject){
-      this.http.post('http://localhost:3000/q',params)
+    this.http.post('http://localhost:3000/q',params)
       .subscribe(
         res => {
           if (res['error'] == "none"){
             this.type = res['data'];
-            console.log(this.type)
-            res(res['data']);
+            return;
           }
           else
-            reject(res['error']);
+            this.snackBar.open(res['error'], 'ok' , {
+            duration: 1000,});
         }
       );
-    });
-    
-    return ;
+
   }
 
   goToPlan(selected){

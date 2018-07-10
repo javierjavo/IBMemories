@@ -17,13 +17,12 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatButtonModule, MatCheckboxModule, MatToolbarModule, MatSidenavModule, MatIconModule, MatListModule, 
  MatInputModule, MatNativeDateModule, MatAutocompleteModule} from '@angular/material';
 
-
-import {MatDatepickerModule} from '@angular/material/datepicker';
+import { MatDatepickerModule } from '@angular/material/datepicker';
 import { ProfilePageComponent } from './profile-page/profile-page.component';
 import { CalendaryPageComponent } from './calendary-page/calendary-page.component';
 import { NotificationsPageComponent } from './notifications-page/notifications-page.component';
 import { CookieService } from 'ngx-cookie-service';
-import {MatSnackBarModule} from '@angular/material/snack-bar';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
 
 const appRoutes:Routes = [
   { path:'profile-page', component:ProfilePageComponent }, //profile
@@ -46,6 +45,6 @@ const appRoutes:Routes = [
     HttpClientModule, MatSlideToggleModule, MatExpansionModule, MatSelectModule
   ],
   providers: [ CookieService ],
-  bootstrap: [AppComponent]
+  bootstrap: [ AppComponent ]
 })
 export class AppModule { }
