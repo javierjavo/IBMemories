@@ -13,6 +13,7 @@ import { MatCardModule } from '@angular/material/card';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatExpansionModule } from '@angular/material/expansion';
 import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatSelectModule } from '@angular/material/select';
 import { MatButtonModule, MatCheckboxModule, MatToolbarModule, MatSidenavModule, MatIconModule, MatListModule, 
  MatInputModule, MatNativeDateModule, MatAutocompleteModule} from '@angular/material';
 
@@ -42,7 +43,7 @@ const appRoutes:Routes = [
     RouterModule.forRoot(appRoutes), BrowserModule, BrowserAnimationsModule, MatButtonModule, MatDatepickerModule,MatFormFieldModule,
     MatCheckboxModule, LayoutModule, MatToolbarModule, MatSidenavModule, MatIconModule, MatListModule,MatInputModule,FormsModule,
     MatNativeDateModule, MatAutocompleteModule, ReactiveFormsModule, MatGridListModule, MatCardModule, MatSnackBarModule, 
-    HttpClientModule, MatSlideToggleModule, MatExpansionModule
+    HttpClientModule, MatSlideToggleModule, MatExpansionModule, MatSelectModule
   ],
   providers: [ CookieService ],
   bootstrap: [AppComponent]

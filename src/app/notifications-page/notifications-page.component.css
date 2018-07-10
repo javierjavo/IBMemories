@@ -28,18 +28,24 @@ mat-grid-tile:hover{
 }
 .p1{
     position: absolute;
-    font-size: 4vw;
+    font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+    font-style: oblique;
+    font-size: 3.5vw;
 }
 .p2{
     position: absolute;
-    font-size: 2.5vw;
+    font-size: 2vw;
+    font-family: fantasy;
+    font-style: oblique;
     top: 5vw;
 }
 .p3{
     position: absolute;
-    font-size: 2vw;
-    right: 10px;
-    bottom: 10px;
+    font-size: 1.2vw;
+    right: 20px;
+    font-family: Arial, Helvetica, sans-serif;
+    font-style: oblique;
+    bottom: 20px;
 }
 .btn-addEvent{
     position: fixed;
@@ -104,5 +110,5 @@ mat-grid-tile:hover{
   }
   
   .example-full-width {
-    width: 100%;
+    width: 50%;
   }

@@ -22,13 +22,14 @@ interface target {
 })
 
 export class NotificationsPageComponent implements OnInit {
+  type=[''];
+  eventlist;
+  eventType;
+  customL:boolean = false;
   editando:boolean = false;
   selected:target;
   evnts:[target];
   date;
-  type = [
-    {name:'Birthday'},{name:'casual meeting'}, {name:'Farewell'}
-  ];
   filteredOptions: Observable<any[]>;
   myControl = new FormControl();
 
@@ -61,7 +62,26 @@ export class NotificationsPageComponent implements OnInit {
 
   private _filter(value: string): any[] {
     const filterValue = value.toLowerCase();
-    return this.type.filter(option => option.name.toLowerCase().indexOf(filterValue) === 0);
+    let params = {
+      type: this.customL ?'getSquadList':'getPersonList',
+      filterValue
+    }
+    let s = new Promise(function(res,reject){
+      this.http.post('http://localhost:3000/q',params)
+      .subscribe(
+        res => {
+          if (res['error'] == "none"){
+            this.type = res['data'];
+            console.log(this.type)
+            res(res['data']);
+          }
+          else
+            reject(res['error']);
+        }
+      );
+    });
+    
+    return ;
   }
 
   goToPlan(selected){

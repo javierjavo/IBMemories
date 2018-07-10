@@ -115,6 +115,22 @@ app.post("/q", function (req, res) {
             }
             delete squad,name,lName;
             break;
+        case 'getPersonList':
+            let filterValueL = req.body['filterValue'];
+            db = ["a",'s','test','t','e','s','t']
+            resp = {
+                data: db.filter(option => option.toLowerCase().indexOf(filterValueL) === 0),
+                'error':"none"
+            }
+            break;
+        case 'getSquadList':
+            let filterValueS = req.body['filterValue'];
+            db = ["v",'a','l','u','e','s','q']
+            resp = {
+                data: db.filter(option => option.toLowerCase().indexOf(filterValueS) === 0),
+                'error':"none"
+            }
+            break;
         case 'events':
             let maile = req.body['mail'];
             let ev = [] 

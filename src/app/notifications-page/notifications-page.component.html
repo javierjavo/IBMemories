@@ -22,11 +22,20 @@
       </mat-expansion-panel-header>
 
       <mat-form-field class="example-full-width">
-          <input type="text" placeholder="type" aria-label="Number" matInput [formControl]="myControl" [matAutocomplete]="auto" [(ngModel)]="sSquad">
+        <mat-select placeholder="type" [(ngModel)]="eventType">
+          <mat-option value="Casual meeting">Casual meeting</mat-option>
+          <mat-option value="Birthday">Birthday</mat-option>
+          <mat-option value="Team Building">Team Building</mat-option>
+          <mat-option value="Farewell">Farewell</mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <mat-form-field class="example-full-width">      
+          <input type="text" placeholder="{{customL ? 'squad' : 'custom list'}}" aria-label="Number" matInput [formControl]="myControl" [matAutocomplete]="auto" [(ngModel)]="eventlist">
           <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete">
-          <mat-option *ngFor="let option of filteredOptions | async" [value]="option.name">
-              <B>{{option.name}}</B>
-          </mat-option>
+            <mat-option *ngFor="let option of filteredOptions | async" [value]="option">
+                <B>{{option.name}}</B>
+            </mat-option>
           </mat-autocomplete>
       </mat-form-field>
 
@@ -37,7 +46,8 @@
           <input matInput [matDatepicker]="picker2" placeholder="when is the Event?" [(ngModel)]="date">
           <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
           <mat-datepicker #picker2 startView="year" ></mat-datepicker>
-      </mat-form-field> 
+      </mat-form-field>
+      <mat-slide-toggle color="primary" [(ngModel)]="customL">Make a custom list</mat-slide-toggle>
     </mat-expansion-panel>
 
     <mat-expansion-panel (opened)="panelOpenState = true"
@@ -52,7 +62,11 @@
       </mat-expansion-panel-header>
       <p>I'm visible because I am open</p>
     </mat-expansion-panel>
-    <button mat-button class="btn-submit" (click)="alert('holi')">Save</button>
+  
+    <div class="center">
+      <button mat-button class="btn-submit" (click)="editando = !editando">Save</button>
+      <button mat-button class="btn-submit" (click)="editando = !editando">Cancel</button>
+    </div>
     
   </mat-accordion>
 </mat-grid-list>
