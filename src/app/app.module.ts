@@ -17,6 +17,7 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatButtonModule, MatCheckboxModule, MatToolbarModule, MatSidenavModule, MatIconModule, MatListModule, 
  MatInputModule, MatNativeDateModule, MatAutocompleteModule} from '@angular/material';
 
+import { MatDialogModule } from '@angular/material/dialog';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { ProfilePageComponent } from './profile-page/profile-page.component';
 import { CalendaryPageComponent } from './calendary-page/calendary-page.component';
@@ -42,7 +43,7 @@ const appRoutes:Routes = [
     RouterModule.forRoot(appRoutes), BrowserModule, BrowserAnimationsModule, MatButtonModule, MatDatepickerModule,MatFormFieldModule,
     MatCheckboxModule, LayoutModule, MatToolbarModule, MatSidenavModule, MatIconModule, MatListModule,MatInputModule,FormsModule,
     MatNativeDateModule, MatAutocompleteModule, ReactiveFormsModule, MatGridListModule, MatCardModule, MatSnackBarModule, 
-    HttpClientModule, MatSlideToggleModule, MatExpansionModule, MatSelectModule
+    HttpClientModule, MatSlideToggleModule, MatExpansionModule, MatSelectModule, MatDialogModule
   ],
   providers: [ CookieService ],
   bootstrap: [ AppComponent ]

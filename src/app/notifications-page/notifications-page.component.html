@@ -31,7 +31,7 @@
       </mat-form-field>
 
       <mat-form-field class="example-full-width">      
-          <input type="text" placeholder="{{customL ? 'squad' : 'custom list'}}" aria-label="Number" matInput [matAutocomplete]="auto" [(ngModel)]="eventListView" (keyup)="filter(eventListView)">
+          <input type="text" placeholder="{{customL ? 'custom list' : 'squad'}}" aria-label="Number" matInput [matAutocomplete]="auto" [(ngModel)]="eventListView" (keyup)="filter(eventListView)">
           <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete">
             <mat-option *ngFor="let option of type" [value]="option" (click)="filter(eventListView)">
                 <B>{{option}}</B>
@@ -60,7 +60,7 @@
           choose a place and vote
         </mat-panel-description>
       </mat-expansion-panel-header>
-      <p>I'm visible because I am open</p>
+      <button mat-raised-button (click)="openDialog()">Pick one</button>
     </mat-expansion-panel>
 
     <mat-expansion-panel >

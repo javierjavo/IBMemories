@@ -95,7 +95,7 @@ mat-grid-tile:hover{
     background-color: transparent;
     border-radius: 10px;
   }
-  
+
 .center > button {
     width: 100px;
     height: 40px;
@@ -105,23 +105,23 @@ mat-grid-tile:hover{
     color: white;
     text-shadow: 1px 1px 5px rgb(0, 0, 0);
     border: 2px solid rgb(13, 33, 63);
+} 
+.example-full-width {
+    width: 50%;
+}
+.btn-view{
+    text-decoration: none;
+    width: 40px;
+    padding: 10px;
+    font-weight: 600;
+    font-size: 20px;
+    border-radius: 6px;
+    background-color: rgb(105, 143, 226);
+    color: white;
+    text-shadow: 1px 1px 5px rgb(0, 0, 0);
+    border: 2px solid rgb(13, 33, 63);
 }
 
-  .main-div{
-    height: 80vh;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-  }
-
-  .example-form {
-    position: relative;
-    min-width: 150px;
-    max-width: 500px;
-    width: 100%;
-    top:0px;
-  }
-  
-  .example-full-width {
-    width: 50%;
-  }
+.btn-view:hover{
+    background-color: rgb(79, 111, 179);
+}

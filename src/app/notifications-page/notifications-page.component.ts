@@ -1,12 +1,11 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Inject } from '@angular/core';
 import { CookieService } from 'ngx-cookie-service';
 import { HttpClient } from '@angular/common/http';
 import { MatSnackBar, throwMatDuplicatedDrawerError } from '@angular/material';
-import { FormControl } from '@angular/forms';
-import { Observable } from 'rxjs';
-import { map, startWith } from 'rxjs/operators';
+import {MatDialog, MatDialogRef, MAT_DIALOG_DATA} from '@angular/material';
 
-interface target {
+
+export interface target {
   id:number,
   list:any,
   name:string,
@@ -14,6 +13,11 @@ interface target {
   date:any,
   custom:string
 };
+
+export interface DialogData {
+  animal: string;
+  name: string;
+}
 
 @Component({
   selector: 'app-notifications-page',
@@ -32,7 +36,7 @@ export class NotificationsPageComponent implements OnInit {
   evnts:[target];
   date;
 
-  constructor(private cookie: CookieService, public snackBar: MatSnackBar, private http: HttpClient) {
+  constructor(private cookie: CookieService, public snackBar: MatSnackBar, private http: HttpClient, public dialog: MatDialog) {
   }
 
   ngOnInit() {
@@ -65,7 +69,7 @@ export class NotificationsPageComponent implements OnInit {
 
     const filterValue = value.toLowerCase();
     let params = {
-      type: this.customL ?'getSquadList':'getPersonList',
+      type: this.customL ?'getPersonList':'getSquadList',
       filterValue
     }
     this.http.post('http://localhost:3000/q',params)
@@ -98,6 +102,36 @@ export class NotificationsPageComponent implements OnInit {
       custom:'none'
     };
     this.evnts.push(newEvent);
+  }
+
+  openDialog(): void {
+    let name = "titulo";
+    let animal = "";
+    const dialogRef = this.dialog.open(DialogOverviewExampleDialog, {
+      width: '100%',
+      data: {name: name, animal: animal}
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      console.log('The dialog was closed');
+      animal = result;
+    });
+  } 
+
+}
+
+@Component({
+  selector: 'dialog-overview-example-dialog',
+  templateUrl: 'dialog-overview-example-dialog.html',
+})
+export class DialogOverviewExampleDialog {
+
+  constructor(
+    public dialogRef: MatDialogRef<DialogOverviewExampleDialog>,
+    @Inject(MAT_DIALOG_DATA) public data: DialogData) {}
+
+  onNoClick(): void {
+    this.dialogRef.close();
   }
 
 }
