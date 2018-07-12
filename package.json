@@ -33,6 +33,7 @@
     "ng-bootstrap": "^1.6.3",
     "ngx-bootstrap": "^3.0.1",
     "ngx-cookie-service": "^1.0.10",
+    "q": "^1.5.1",
     "request": "^2.87.0",
     "require": "^2.4.20",
     "rxjs": "^6.0.0",

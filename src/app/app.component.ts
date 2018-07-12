@@ -2,6 +2,7 @@ import { Component, Injectable } from '@angular/core';
 import { CookieService } from 'ngx-cookie-service';
 import { HttpClient } from '@angular/common/http';
 import { MatSnackBar, throwMatDuplicatedDrawerError } from '@angular/material';
+import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 
 @Component({
   selector: 'app-root',
@@ -12,16 +13,27 @@ import { MatSnackBar, throwMatDuplicatedDrawerError } from '@angular/material';
 @Injectable()
 export class AppComponent {
   title = 'app';
+  isLinear = true;
+  firstFormGroup: FormGroup;
+
+  Registry = false;
+  forgot = false;
   user="";
   passwd="";
 
-  constructor(private cookie: CookieService, public snackBar: MatSnackBar, private http: HttpClient){ }
+  constructor(private cookie: CookieService, public snackBar: MatSnackBar, private http: HttpClient,private _formBuilder: FormBuilder){ }
+
+  ngOnInit() {
+    this.firstFormGroup = this._formBuilder.group({
+      firstCtrl: ['', Validators.required]
+    });
+  }
 
   login(){
     var params = {
       type:'login',
       user: this.user, 
-      pass: this.passwd
+      passwd: this.passwd
     }
 
     this.http.post('http://localhost:3000/q',params)
@@ -31,6 +43,10 @@ export class AppComponent {
           this.cookie.set("login",this.user);
           this.snackBar.open("Welcome", params['user'] , {
             duration: 2000,
+          });
+        }else{
+          this.snackBar.open( res['error'], 'ok', {
+            duration: 4000,
           });
         }
       }

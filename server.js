@@ -3,8 +3,8 @@ const http = require('http');
 const path = require('path');
 var unirest = require('unirest');
 var bodyParser = require('body-parser');
+const cloudant = require('./query');
 
-const url = "https://6171ddb2-5591-4f5f-937e-fe48a41b1837-bluemix:a0d601f29c9601c494038949bcbaa26deefbe73c71e31e948be91cfa9ce506f9@6171ddb2-5591-4f5f-937e-fe48a41b1837-bluemix.cloudant.com";
 const app = express();
 const port = process.env.PORT || 3000;
 
@@ -75,28 +75,29 @@ app.post("/q", function (req, res) {
     let resp = {'error':"connection refused"};
     switch (s){
         case 'login':
-            //check on db replace the true
-            unirest.post(url+'/login/_find')
-            .headers({Accept: 'application/json', 'Content-Type': 'application/json'})
-            //.send({ "parameter": 23, "foo": "bar" })
-            .send({ 
-                selector:{
-                    "_id":{
-                        "$gt":"0"
+            cloudant.db.log.then(r => {
+                    resp = {
+                        'data':"none",
+                        'error':"Email is not correct, are you registered yet?"
+                    }   
+                r.forEach(val=>{
+                    if( val['user'] == req.body['user']){
+                        if(val['passwd'] == req.body['passwd']){
+                            resp = {
+                                'data':"pass",
+                                'error':"none"
+                            }
+                        }else{
+                            resp = {
+                                'data':"none",
+                                'error':"Password incorrect"
+                            }
+                        }
                     }
-                }
+                })
+                res.send(resp);
             })
-            .end(function (response) {
-                console.log(response.body);
-                console.log(response.code);
-            });
-            let logStatus = (true)?'pass':'none';
-            resp = {
-                'data':logStatus,
-                'error':"none"
-            }
-            delete logStatus;
-            break;
+            return;
         case 'update':
             let mail = req.body['mail'];
             //get data

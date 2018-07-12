@@ -1,6 +1,43 @@
 <!--The content below is only a placeholder and can be replaced.-->
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 <div class="mainContainer" *ngIf="!logged()">
-    <div class="main-div">
+    <div class="main-div" *ngIf="Registry">
+        <button mat-raised-button (click)="Registry=!Registry" id="toggle-linear" style="border-radius: 30px;"><mat-icon>keyboard_arrow_left</mat-icon>Return</button>
+        <mat-horizontal-stepper #stepper style="border-radius: 20px; overflow: hidden;">
+        <mat-step>
+            <form>
+            <ng-template matStepLabel>Fill out your name</ng-template>
+            <mat-form-field>
+                <input matInput placeholder="Last name, First name" required>
+            </mat-form-field>
+            <div>
+                <button mat-button matStepperNext>Next</button>
+            </div>
+            </form>
+        </mat-step>
+        <mat-step>
+            <form>
+            <ng-template matStepLabel>Fill out your address</ng-template>
+            <mat-form-field>
+                <input matInput placeholder="Address" required>
+            </mat-form-field>
+            <div>
+                <button mat-button matStepperNext>Next</button>
+                <button mat-button matStepperPrevious>Back</button>
+            </div>
+            </form>
+        </mat-step>
+        <mat-step>
+            <ng-template matStepLabel>Done</ng-template>
+            You are now done.
+            <div>
+                <button mat-button>sernd</button>
+                <button mat-button matStepperPrevious>Back</button>
+            </div>
+        </mat-step>
+        </mat-horizontal-stepper>
+    </div>
+    <div class="main-div" *ngIf="!Registry && !forgot">
         <mat-card class="z-depth center" flex="50" >
             <div align="center">
                 <img width="400" height="300" class="logo" src="../assets/IBM.png" alt="IBM" >
@@ -12,9 +49,35 @@
                         <input matInput type="password" placeholder="Password" [(ngModel)]="passwd" [ngModelOptions]="{standalone: true}">
                     </mat-form-field>
                     <button mat-button class="btn-submit" (click)="login()" >Login</button>
+                    <button mat-button class="btn-submit" (click)="Registry=true" >Registry</button>
                 </form>
+                <a (click)="forgot=!forgot" >I forgot my password</a>
             </div>
         </mat-card>
+    </div>
+    <div class="main-div" *ngIf="forgot">
+        <button mat-raised-button (click)="forgot=!forgot" id="toggle-linear" style="border-radius: 30px;"><mat-icon>keyboard_arrow_left</mat-icon>Return</button>
+        <mat-horizontal-stepper [linear]="isLinear" #stepper style="border-radius: 10px; overflow: hidden;">
+            <mat-step [stepControl]="firstFormGroup">
+                <form [formGroup]="firstFormGroup">
+                <ng-template matStepLabel>Fill out your name</ng-template>
+                <mat-form-field>
+                    <input matInput placeholder="Last name, First name" formControlName="firstCtrl" required>
+                </mat-form-field>
+                <div>
+                    <button mat-button matStepperNext>Next</button>
+                </div>
+                </form>
+            </mat-step>
+        <mat-step>
+            <ng-template matStepLabel>Done</ng-template>
+            You are now done.
+            <div>
+            <button mat-button matStepperPrevious>Back</button>
+            <button mat-button>Reset</button>
+            </div>
+        </mat-step>
+        </mat-horizontal-stepper>
     </div>
 </div>
 <my-nav *ngIf="logged()"></my-nav>
