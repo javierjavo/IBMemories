@@ -15,7 +15,10 @@ export class AppComponent {
   title = 'app';
   isLinear = true;
   firstFormGroup: FormGroup;
-
+  registry = {
+    user:"",
+    pass:""
+  };
   Registry = false;
   forgot = false;
   user="";
@@ -25,7 +28,7 @@ export class AppComponent {
 
   ngOnInit() {
     this.firstFormGroup = this._formBuilder.group({
-      firstCtrl: ['', Validators.required]
+      firstCtrl: ['', Validators.email]
     });
   }
 
@@ -35,7 +38,6 @@ export class AppComponent {
       user: this.user, 
       passwd: this.passwd
     }
-
     this.http.post('http://localhost:3000/q',params)
     .subscribe(
       res => {
@@ -61,6 +63,27 @@ export class AppComponent {
       this.cookie.delete("login");
       return false;
     }
-    
+  }
+
+  recoveryPasswd(){
+    var params = {
+      type:'recoveryPasswd',
+      user: this.user
+    }
+    this.http.post('http://localhost:3000/q',params)
+    .subscribe(
+      res => {
+        if (res['data'] == "pass"){
+          this.cookie.set("login",this.user);
+          this.snackBar.open("mail sended",'', {
+            duration: 2000,
+          });
+        }else{
+          this.snackBar.open( res['error'], 'ok', {
+            duration: 4000,
+          });
+        }
+      }
+    )
   }
 }

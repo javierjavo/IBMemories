@@ -6,7 +6,7 @@
     height: 100vh;
     background-image: url("../assets/fondo7.jpg");
     background-repeat: cover;
-    background-size: 100% 190%;
+    background-size: 110% 190%;
 }
 
 .example-form-field {
@@ -16,7 +16,7 @@
 .btn-submit{
     position: relative;
     margin:auto;
-    top: 30px;
+    top: 0px;
     margin-bottom: 10px;
     background-color: rgb(70, 133, 214);
     border-radius: 50px;
@@ -26,13 +26,16 @@
 
 .logo{
     position: relative;
-    top:-60px;
+    width: 60%;
+    height: 60%;
+    top:-40px;
     border-radius: 20px;
     margin-bottom: -50px;
 }
 
 .center{
     width: 50%;
+    height: 70%;
     margin: 0px auto;
     background-color: rgba(255, 255, 255, 0.85);
     border-radius: 20px;
@@ -50,9 +53,19 @@
     min-width: 150px;
     max-width: 500px;
     width: 100%;
-    top:-80px;
+    top:-20px;
   }
   
   .example-full-width {
     width: 100%;
   }
+
+.link{
+    position: relative;
+    top: -10px;
+}
+.link:hover{
+    color: blue;
+    text-decoration: blue;
+    cursor: pointer;
+}

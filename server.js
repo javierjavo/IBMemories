@@ -4,6 +4,7 @@ const path = require('path');
 var unirest = require('unirest');
 var bodyParser = require('body-parser');
 const cloudant = require('./query');
+var nodemailer = require('nodemailer');
 
 const app = express();
 const port = process.env.PORT || 3000;
@@ -15,6 +16,31 @@ app.use(function(req, res, next) {
     res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
     next();
 })
+
+function sendMail(to,subject,text){
+    var transporter = nodemailer.createTransport({
+        service: 'gmail',
+        auth: {
+          user: 'sat.franciscojavier@gmail.com',
+          pass: 'satprogram'
+        }
+      });
+      
+      var mailOptions = {
+        from: 'sat.franciscojavier@gmail.com',
+        to,
+        subject,
+        text
+      };
+      
+      transporter.sendMail(mailOptions, function(error, info){
+        if (error) {
+          console.log(error);
+        } else {
+          console.log('Email sent: ' + info.response);
+        }
+      });
+}
 
 function getSquadList(squad){
     /* get list attached at that name*/
@@ -98,6 +124,20 @@ app.post("/q", function (req, res) {
                 res.send(resp);
             })
             return;
+        case 'recoveryPasswd':
+            cloudant.db.log.then(r => {
+                resp = {
+                    'data':"none",
+                    'error':"Email is not correct, are you registered yet?"
+                }   
+            r.forEach(val=>{
+                if( val['user'] == req.body['user']){
+                    sendMail(val['user'],'your Password','Hi'+val['user']+',\n we found your password : '+val['passwd'])+"\nremember that you can change it on your profile\nIBM and IBMemories wish you, a take nice day ;)";
+                }
+            })
+            res.send(resp);
+            })
+        return;
         case 'update':
             let mail = req.body['mail'];
             //get data
