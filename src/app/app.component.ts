@@ -15,11 +15,17 @@ export class AppComponent {
   title = 'app';
   isLinear = true;
   firstFormGroup: FormGroup;
-  registry = {
-    user:"",
-    pass:""
-  };
   Registry = false;
+  dataRegistry = {
+    user:"",
+    name:"",
+    Lname:"",
+    d1:new Date(),
+    d2:new Date(),
+    config:false,
+    pswd1:"",
+    pswd2:""
+  };
   forgot = false;
   user="";
   passwd="";
@@ -30,6 +36,35 @@ export class AppComponent {
     this.firstFormGroup = this._formBuilder.group({
       firstCtrl: ['', Validators.email]
     });
+  }
+
+  registry(data){
+    if(
+      data.pswd1 == data.pswd2 && data.pswd1.length > 0 &&
+      data.user.length > 0 &&
+      data.name.length > 0 &&
+      data.Lname.length > 0
+    ){
+      let status = false;
+      var params = {
+        type:'addUser',
+        data
+      }
+      this.http.post('http://localhost:3000/q',params)
+      .subscribe(
+        res => {
+          this.snackBar.open( res['error'], 'ok', {
+            duration: 4000,
+          });
+          status = (res['data']=='ok');
+        }
+      )
+      this.user = data.user;
+      this.passwd = data.pswd1;
+      this.login();
+      return status;
+    }
+    return true;
   }
 
   login(){

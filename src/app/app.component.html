@@ -7,8 +7,14 @@
         <mat-step>
             <form>
             <ng-template matStepLabel>Fill out your name</ng-template>
-            <mat-form-field>
-                <input matInput placeholder="Last name, First name" required>
+            <mat-form-field class="center">
+                <input matInput placeholder="email" type="email" [ngModelOptions]="{standalone: true}" [(ngModel)]="dataRegistry.user" required>
+            </mat-form-field> <br>
+            <mat-form-field class="center">
+                <input matInput placeholder="First name" [ngModelOptions]="{standalone: true}" [(ngModel)]="dataRegistry.name" required>
+            </mat-form-field> <br>
+            <mat-form-field class="center">
+                <input matInput placeholder="Last name" [ngModelOptions]="{standalone: true}" [(ngModel)]="dataRegistry.Lname" required>
             </mat-form-field>
             <div>
                 <button mat-button matStepperNext>Next</button>
@@ -17,10 +23,18 @@
         </mat-step>
         <mat-step>
             <form>
-            <ng-template matStepLabel>Fill out your address</ng-template>
-            <mat-form-field>
-                <input matInput placeholder="Address" required>
-            </mat-form-field>
+            <ng-template matStepLabel>important days</ng-template>
+                <mat-form-field class="center">
+                    <input [(ngModel)]="dataRegistry.d1" matInput [matDatepicker]="picker" [ngModelOptions]="{standalone: true}" placeholder="your Birthday">
+                    <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                    <mat-datepicker #picker></mat-datepicker>
+                </mat-form-field> <br>
+                <mat-form-field class="center">
+                    <input matInput [(ngModel)]="dataRegistry.d2" [matDatepicker]="picker1" [ngModelOptions]="{standalone: true}" placeholder="when your story start">
+                    <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
+                    <mat-datepicker #picker1></mat-datepicker>
+                </mat-form-field> <br>
+                <mat-slide-toggle [(ngModel)]="dataRegistry.config" [ngModelOptions]="{standalone: true}"> share my dates </mat-slide-toggle>
             <div>
                 <button mat-button matStepperPrevious>Back</button>
                 <button mat-button matStepperNext>Next</button>
@@ -29,10 +43,15 @@
         </mat-step>
         <mat-step>
             <ng-template matStepLabel>Done</ng-template>
-            You are now done.
+            <mat-form-field class="center">
+                <input matInput placeholder="Enter a Password" type="password" required [(ngModel)]="dataRegistry.pswd1">
+            </mat-form-field> <br>
+            <mat-form-field class="center">
+                <input matInput placeholder="Repeat your password" type="password" required [(ngModel)]="dataRegistry.pswd2">
+            </mat-form-field>
             <div>
                 <button mat-button matStepperPrevious>Back</button>
-                <button mat-button>send</button>
+                <button mat-button (click)="Registry=registry(dataRegistry)">send</button>
             </div>
         </mat-step>
         </mat-horizontal-stepper>
@@ -76,7 +95,7 @@
             password
             <div>
             <button mat-button matStepperPrevious>Back</button>
-            <button mat-button (click)="recoveryPasswd()">Send my password</button>
+            <button mat-button (click)="recoveryPasswd() && forgot=!forgot">Send my password</button>
             </div>
         </mat-step>
         </mat-horizontal-stepper>

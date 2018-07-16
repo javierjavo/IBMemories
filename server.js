@@ -1,13 +1,13 @@
 const express = require('express');
 const http = require('http');
-const path = require('path');
-var unirest = require('unirest');
-var bodyParser = require('body-parser');
-const cloudant = require('./query');
-var nodemailer = require('nodemailer');
-
 const app = express();
 const port = process.env.PORT || 3000;
+const cloudant = require('./query');
+var unirest = require('unirest');
+var sleep = require('sleep');
+var bodyParser = require('body-parser');
+var nodemailer = require('nodemailer');
+var petition = 0;
 
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
@@ -33,13 +33,7 @@ function sendMail(to,subject,text){
         text
       };
       
-      transporter.sendMail(mailOptions, function(error, info){
-        if (error) {
-          console.log(error);
-        } else {
-          console.log('Email sent: ' + info.response);
-        }
-      });
+      transporter.sendMail(mailOptions, function(error, info){ });
 }
 
 function getSquadList(squad){
@@ -92,20 +86,31 @@ function getEventFor(myself){
                 eventResp.push(x);
             }
         });
-    }); 
+    });
     return eventResp;
 }
 
 app.post("/q", function (req, res) {
+    sleep.sleep(Math.trunc(petition/4));
+    petition++;
     let s = req.body['type'];
-    let resp = {'error':"connection refused"};
+    let resp = {'error':"connection unstable low response"};
     switch (s){
+        case 'addUser':
+            cloudant.db.addUser(req.body['data']);
+            cloudant.db.log = cloudant.db.Update('login');
+            resp = {
+                'data':"ok",
+                'error':"update sussesfull"
+            }
+            res.send(resp);
+        break;
         case 'login':
             cloudant.db.log.then(r => {
-                    resp = {
-                        'data':"none",
-                        'error':"Email is not correct, are you registered yet?"
-                    }   
+                resp = {
+                    'data':"none",
+                    'error':"Email is not correct, are you registered yet?"
+                }   
                 r.forEach(val=>{
                     if( val['user'] == req.body['user']){
                         if(val['passwd'] == req.body['passwd']){
@@ -123,21 +128,25 @@ app.post("/q", function (req, res) {
                 })
                 res.send(resp);
             })
-            return;
+        break;
         case 'recoveryPasswd':
             cloudant.db.log.then(r => {
                 resp = {
                     'data':"none",
                     'error':"Email is not correct, are you registered yet?"
                 }   
-            r.forEach(val=>{
-                if( val['user'] == req.body['user']){
-                    sendMail(val['user'],'your Password','Hi'+val['user']+',\n we found your password : '+val['passwd'])+"\nremember that you can change it on your profile\nIBM and IBMemories wish you, a take nice day ;)";
-                }
+                r.forEach(val=>{
+                    if( val['user'] == req.body['user']){
+                        sendMail(val['user'],'your Password','Hi'+val['user']+',\n we found your password : '+val['passwd'])+"\nremember that you can change it on your profile\nIBM and IBMemories wish you, a take nice day ;)";
+                        resp = {
+                            'data':"none",
+                            'error':"check your mail"
+                        } 
+                    }
+                })
+                res.send(resp);
             })
-            res.send(resp);
-            })
-        return;
+        break;
         case 'update':
             let mail = req.body['mail'];
             //get data
@@ -156,22 +165,29 @@ app.post("/q", function (req, res) {
             }
             delete mail,data;
             break;
-        case 'getAll':
+        case 'getProfile':
             //take data from db
-            let squad = "penguins";
-            let name = req.body['mail'];
-            let lName = req.body['mail'];
-            resp = {
-                'squad':squad,
-                'name':name,
-                'lName':lName,
-                'birthday':new Date(),
-                'anniversary':new Date(),
-                'share':true,
-                'error':"none"
-            }
-            delete squad,name,lName;
-            break;
+            cloudant.db.log.then(r => {
+                resp = {
+                    'data':"none",
+                    'error':"can't connect to db"
+                }   
+                r.forEach(val=>{
+                    if(val['user']==req.body['mail']){
+                        resp = {
+                            'squad':val['squad'],
+                            'name':val['name'],
+                            'lName':val['Lname'],
+                            'birthday':val['birthday'],
+                            'anniversary':val['anniversary'],
+                            'share':val['config'],
+                            'error':"none"
+                        }
+                        res.send(resp);
+                    }
+                })
+            })
+            return;
         case 'getPersonList':
             let filterValueL = req.body['filterValue'];
             db = ['test,','t,','e,','s,','t,']
@@ -202,9 +218,17 @@ app.post("/q", function (req, res) {
             resp = {'error':"command none found"}
             break;
     }
-    res.send(resp);
+    petition--;
     return;
   });
   
+setInterval(function() {
+    d = new Date();
+    d.setDate(d.getDate() + dias);
+    //if(d.getMonth() == );
+    console.log();
+}, 1000);
+
+
 const server = http.createServer(app);
 server.listen(port,() => console.log('running at port '+port));

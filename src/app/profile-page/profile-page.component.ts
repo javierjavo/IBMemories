@@ -28,8 +28,9 @@ export class ProfilePageComponent implements OnInit {
   }
   
   ngOnInit() {
+    alert(new Date());
     let params = {
-      type:'getAll',
+      type:'getProfile',
       mail: this.cookie.get('login')
     }
     this.http.post('http://localhost:3000/q',params)

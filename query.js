@@ -11,12 +11,22 @@ class CloudantConnect {
     }
     //geter and setter
     // method
-    addUser(user,passwd){
+    addUser(d){
+        let env = this;
         unirest.post(url+'/login')
         .headers({Accept: 'application/json', 'Content-Type': 'application/json'})
-        .send({ "user": user, "pass": passwd })
+        .send({ 
+            user:d.user,
+            passwd:d.pswd2,
+            squad:"",
+            name:d.name,
+            Lname:d.Lname,
+            birthday:d.d1,
+            anniversary:d.d2,
+            config:d.config
+        })
         .end(function (response) {
-            this.log =  this.Update('login');
+            //env.log = env.Update('login');
             //response.body.docs;
             //console.log(response.body.docs);
         });
@@ -35,7 +45,13 @@ class CloudantConnect {
                     },
                     "fields": [
                         "user",
-                        "passwd"
+                        "passwd",
+                        "squad",
+                        "name",
+                        "Lname",
+                        "birthday",
+                        "anniversary",
+                        "config",
                     ]
                 }
             break;
@@ -59,7 +75,7 @@ class CloudantConnect {
                 //this.log = response.body.docs;
                 defer.resolve(response.body.docs);
                 // asignTo(db,response.body.docs);
-            });
+            });    
         return defer.promise;
     }
     asignTo(db,resp){
