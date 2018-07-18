@@ -1,18 +1,43 @@
 var unirest = require('unirest');
 var Q = require('q');
-const url2 = "https://6171ddb2-5591-4f5f-937e-fe48a41b1837-bluemix:a0d601f29c9601c494038949bcbaa26deefbe73c71e31e948be91cfa9ce506f9@6171ddb2-5591-4f5f-937e-fe48a41b1837-bluemix.cloudant.com";
 const url = "https://1634dd6a-1741-4de7-9c4e-3d6f2543538e-bluemix:7dc590eccbcabca41ed8d2466a08c8e752d55ee544bd09567ec61c231ce2b21b@1634dd6a-1741-4de7-9c4e-3d6f2543538e-bluemix.cloudant.com";
 
 
 class CloudantConnect {
     constructor() {
         this.log = this.Update('login');
-        this.event = this.Update('event');
+        this.event = this.Update('events');
     }
     //geter and setter
     // method
+    
+    updateProfile(rev, data){
+        unirest.put(url+'/login/'+data['id'])
+        .headers({Accept: 'application/json', 'Content-Type': 'application/json', 'If-Match':rev})
+        .send({ 
+            'user':data['user'],
+            'passwd':data['passwd'],
+            'squad':data['squad'],
+            'name':data['name'],
+            'Lname':data['Lname'],
+            'birthday':data['birthday'],
+            'anniversary':data['anniversary'],
+            'config':data['config']
+         })
+        .end(function (response) {
+           //this.log() = this.Update('login');
+        });
+    }
+
+    deleteEvent(rev,id){
+        unirest.delete(url+'/events/'+id)
+        .headers({Accept: 'application/json', 'Content-Type': 'application/json', 'If-Match':rev})
+        .end(function (response) {
+           //this.log() = this.Update('login');
+        });
+    }
+
     addUser(d){
-        let env = this;
         unirest.post(url+'/login')
         .headers({Accept: 'application/json', 'Content-Type': 'application/json'})
         .send({ 
@@ -25,11 +50,21 @@ class CloudantConnect {
             anniversary:d.d2,
             config:d.config
         })
-        .end(function (response) {
-            //env.log = env.Update('login');
-            //response.body.docs;
-            //console.log(response.body.docs);
-        });
+        .end(function (response) { });
+    }
+    
+    addEvent(d){
+        unirest.post(url+'/events')
+        .headers({Accept: 'application/json', 'Content-Type': 'application/json'})
+        .send({ 
+            manager:d['manager'],
+            list:d['squad'],
+            name:d['name'],
+            type:d['type'],
+            date:d['date'],
+            custom:d['custom']
+        })
+        .end(function (response) { });
     }
 
     Update(db){
@@ -39,11 +74,13 @@ class CloudantConnect {
             case 'login':
                 fields = {
                     selector: {
-                        "user": {
-                            "$gt": ""
-                        }
+                        "_id": {
+                            "$gt": "0"
+                         }
                     },
                     "fields": [
+                        "_id",
+                        "_rev",
                         "user",
                         "passwd",
                         "squad",
@@ -51,18 +88,28 @@ class CloudantConnect {
                         "Lname",
                         "birthday",
                         "anniversary",
-                        "config",
+                        "config"
                     ]
-                }
+                };
             break;
             case 'events':
             fields = {
                 selector: {
-                   "_id": {
-                      "$gt": "0"
-                   }
-                }
-             };
+                    "_id": {
+                        "$gt": ""
+                    }
+                },
+                "fields": [
+                    "_id",
+                    "_rev",
+                    "manager",
+                    "list",
+                    "name",
+                    "type",
+                    "date",
+                    "custom"
+                ]
+            };
             break;
             default:
             break;
@@ -74,19 +121,9 @@ class CloudantConnect {
             .end(function (response) {
                 //this.log = response.body.docs;
                 defer.resolve(response.body.docs);
-                // asignTo(db,response.body.docs);
+                
             });    
         return defer.promise;
-    }
-    asignTo(db,resp){
-        switch(db){
-            case 'login':
-                this.log = resp;
-            break;
-            default:
-            break;
-
-        }
     }
 }
 

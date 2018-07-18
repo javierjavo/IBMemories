@@ -15,7 +15,7 @@ export class ProfilePageComponent implements OnInit {
   sSquad = '';
   name = '';
   lastname = '';
-  share = true;
+  config = true;
   IBM_date;
   birthday;
   myControl = new FormControl();
@@ -24,11 +24,10 @@ export class ProfilePageComponent implements OnInit {
   ]; //colect from db2 by python with http request
   filteredOptions: Observable<any[]>;
 
-  constructor(private cookie: CookieService, public snackBar: MatSnackBar, private http: HttpClient) { 
+  constructor(private cookie: CookieService, public snackBar: MatSnackBar, private http: HttpClient) {
   }
   
   ngOnInit() {
-    alert(new Date());
     let params = {
       type:'getProfile',
       mail: this.cookie.get('login')
@@ -39,10 +38,10 @@ export class ProfilePageComponent implements OnInit {
         if (res['error'] == "none"){
           this.sSquad = res['squad'];
           this.name = res['name'];
-          this.lastname = res['lName'];
+          this.lastname = res['Lname'];
           this.birthday = res['birthday'];
           this.IBM_date = res['anniversary'];
-          this.share = res['share'];
+          this.config = res['config']=='true';
         }
         else
           this.snackBar.open(res['error'], 'ok' , {
@@ -67,10 +66,10 @@ export class ProfilePageComponent implements OnInit {
       type: 'update',
       squad: this.sSquad,
       name: this.name,
-      lName: this.lastname,
+      Lname: this.lastname,
       birthday: this.birthday,
       anniversary: this.IBM_date,
-      share: this.share,
+      config: this.config,
       mail: this.cookie.get('login')
     }
     this.http.post('http://localhost:3000/q',params)

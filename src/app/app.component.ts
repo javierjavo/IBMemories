@@ -53,7 +53,7 @@ export class AppComponent {
       this.http.post('http://localhost:3000/q',params)
       .subscribe(
         res => {
-          this.snackBar.open( res['error'], 'ok', {
+          this.snackBar.open( res['error']+"\n"+res['data'], 'ok', {
             duration: 4000,
           });
           status = (res['data']=='ok');
@@ -61,7 +61,7 @@ export class AppComponent {
       )
       this.user = data.user;
       this.passwd = data.pswd1;
-      this.login();
+      setTimeout(this.login(), 1000);
       return status;
     }
     return true;

@@ -3,7 +3,7 @@
     <mat-card class="miniCard">
       <p class="p1">{{emt.type}}</p>
       <p class="p2">{{emt.name}}</p>
-      <p class="p3">{{emt.date}}</p>
+      <p class="p3">{{ emt.date>0 ? emt.date+" Day Left" : "Today" }}</p>
     </mat-card>
   </mat-grid-tile>
   <button class="btn-addEvent" mat-icon-button (click)="addEvent()">+</button>

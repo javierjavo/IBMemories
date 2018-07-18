@@ -4,16 +4,6 @@ import { HttpClient } from '@angular/common/http';
 import { MatSnackBar, throwMatDuplicatedDrawerError } from '@angular/material';
 import {MatDialog, MatDialogRef, MAT_DIALOG_DATA} from '@angular/material';
 
-
-export interface target {
-  id:number,
-  list:any,
-  name:string,
-  type:string,
-  date:any,
-  custom:string
-};
-
 export interface DialogData {
   animal: string;
   name: string;
@@ -32,8 +22,8 @@ export class NotificationsPageComponent implements OnInit {
   eventType;
   customL:boolean = false;
   editando:boolean = false;
-  selected:target;
-  evnts:[target];
+  selected;
+  evnts=[];
   date;
 
   constructor(private cookie: CookieService, public snackBar: MatSnackBar, private http: HttpClient, public dialog: MatDialog) {
@@ -45,18 +35,22 @@ export class NotificationsPageComponent implements OnInit {
       mail: this.cookie.get('login')
     }
     this.http.post('http://localhost:3000/q',params)
-    .subscribe(
-      res => {
-        if (res['error'] == "none"){
-          this.evnts = res['data'];
-        }
-        else
-          this.snackBar.open(res['error'], 'ok' , {
-            duration: 1000,
-          });
+    .subscribe( res => {
+      if (res['error'] == "none"){
+        let aux = new Date().toISOString().substring(0, 10);
+        let t1 = new Date(aux).getTime();
+        this.evnts = res['data'];
+        this.evnts.forEach(x=>{
+          let t2 = new Date(x.date.substring(0, 10)).getTime();
+          x.date = -1*((t1-t2)/(1000*60*60*24));
+        });
+        this.evnts.sort((x,y)=> x.date > y.date?1:0 );
       }
-    )
-    this.filter('');
+      else
+        this.snackBar.open(res['error'], 'ok' , {
+          duration: 1000,
+      });
+    });
   }
 
   filter(value: string) {
@@ -64,7 +58,6 @@ export class NotificationsPageComponent implements OnInit {
       this.eventList.push(value);
       this.eventListView = "";
       value = "";
-      console.log(this.eventList);
     }
 
     const filterValue = value.toLowerCase();
@@ -94,7 +87,7 @@ export class NotificationsPageComponent implements OnInit {
 
   addEvent(){
     let newEvent = {
-      id:5,
+      manager:'jis',
       list:'penguins',
       name:"name",
       type:"Birthday",
