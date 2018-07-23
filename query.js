@@ -29,6 +29,35 @@ class CloudantConnect {
         });
     }
 
+    addEvent(d){
+        unirest.post(url+'/events')
+        .headers({Accept: 'application/json', 'Content-Type': 'application/json'})
+        .send({ 
+            manager:d['manager'],
+            list:d['squad'],
+            name:d['name'],
+            type:d['type'],
+            date:d['date'],
+            custom:d['custom']
+        })
+        .end(function (response) { });
+    }
+
+    updateEvent(d){
+        unirest.put(url+'/events/'+d['_id'])
+        .headers({Accept: 'application/json', 'Content-Type': 'application/json','If-Match':d['_rev']})
+        .send({ 
+            manager:d['manager'],
+            list:d['squad'],
+            name:d['name'],
+            type:d['type'],
+            date:d['date'],
+            custom:d['custom'],
+            messages:d["messages"]
+        })
+        .end(function (response) { });
+    }
+
     deleteEvent(rev,id){
         unirest.delete(url+'/events/'+id)
         .headers({Accept: 'application/json', 'Content-Type': 'application/json', 'If-Match':rev})
@@ -49,20 +78,6 @@ class CloudantConnect {
             birthday:d.d1,
             anniversary:d.d2,
             config:d.config
-        })
-        .end(function (response) { });
-    }
-    
-    addEvent(d){
-        unirest.post(url+'/events')
-        .headers({Accept: 'application/json', 'Content-Type': 'application/json'})
-        .send({ 
-            manager:d['manager'],
-            list:d['squad'],
-            name:d['name'],
-            type:d['type'],
-            date:d['date'],
-            custom:d['custom']
         })
         .end(function (response) { });
     }
@@ -107,7 +122,8 @@ class CloudantConnect {
                     "name",
                     "type",
                     "date",
-                    "custom"
+                    "custom",
+                    "messages"
                 ]
             };
             break;

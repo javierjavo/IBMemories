@@ -25,6 +25,7 @@ export class NotificationsPageComponent implements OnInit {
   selected;
   evnts=[];
   date;
+  taComment = "";
 
   constructor(private cookie: CookieService, public snackBar: MatSnackBar, private http: HttpClient, public dialog: MatDialog) {
   }
@@ -77,11 +78,48 @@ export class NotificationsPageComponent implements OnInit {
             duration: 1000,});
         }
       );
+  }
 
+  updateInfo(){
+    if(this.selected.messages) this.selected.messages.forEach(x=>{ 
+      if (x.user == this.cookie.get('login')){
+        x.message = this.taComment;
+      } 
+    });
+    else {
+      if (this.selected['messages'])
+      this.selected['messages'].push({
+        "user":this.cookie.get('login'),
+        "message":this.taComment
+      });
+      else this.selected['messages']= [{
+        "user":this.cookie.get('login'),
+        "message":this.taComment
+      }];
+    }
+    let params = {
+      type: 'updateEvent',
+      data: this.selected
+    }
+    this.http.post('http://localhost:3000/q',params)
+      .subscribe(
+        res => {
+          if (res['error'] != "none"){
+            this.snackBar.open(res['error'], 'ok' , {
+              duration: 1000,});
+            return false;
+          } 
+          return true;
+        }
+      );
   }
 
   goToPlan(selected){
     this.selected = selected;
+    let d = new Date();
+    this.selected.actual = new Date(d.setDate(d.getDate() + selected.date)).toDateString().substring(0, 16);
+    if(selected.messages) selected.messages.forEach(x=>{ if (x.user == this.cookie.get('login'))  this.taComment = x.message });
+    else this.taComment = "";
     this.editando = true;
   }
 
@@ -92,7 +130,7 @@ export class NotificationsPageComponent implements OnInit {
       name:"name",
       type:"Birthday",
       date:"Date",
-      custom:'none'
+      custom:'yes'
     };
     this.evnts.push(newEvent);
   }

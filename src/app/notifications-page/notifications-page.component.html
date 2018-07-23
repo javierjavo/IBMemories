@@ -6,7 +6,7 @@
       <p class="p3">{{ emt.date>0 ? emt.date+" Day Left" : "Today" }}</p>
     </mat-card>
   </mat-grid-tile>
-  <button class="btn-addEvent" mat-icon-button (click)="addEvent()">+</button>
+  <button class="btn-addEvent" mat-icon-button (click)="addEvent()">+</button> -->
 </mat-grid-list>
 
 <mat-grid-list *ngIf="editando" cols="3" rowHeight="2:1">
@@ -50,8 +50,24 @@
       <mat-slide-toggle color="primary" (click)="filter('')" [(ngModel)]="customL">Make a custom list</mat-slide-toggle>
     </mat-expansion-panel>
 
-    <mat-expansion-panel (opened)="panelOpenState = true"
-                        (closed)="panelOpenState = false">
+    <mat-expansion-panel *ngIf="selected.custom!='yes'">
+      <mat-expansion-panel-header>
+        <mat-panel-title>
+          Event Information
+        </mat-panel-title>
+        <mat-panel-description>
+          change the information, Date, name, ...
+        </mat-panel-description>
+      </mat-expansion-panel-header>
+
+      <mat-label> {{ selected.name }} </mat-label> <br>
+      <mat-label> {{ selected.type }} </mat-label> <br>
+      <mat-label> {{ selected.actual }} </mat-label> <br>
+      <!--  <mat-label> {{ selected.manager }} </mat-label> <br> -->
+
+    </mat-expansion-panel>
+
+    <mat-expansion-panel *ngIf="selected.custom=='yes'">
       <mat-expansion-panel-header>
         <mat-panel-title>
           Planning
@@ -72,12 +88,14 @@
           Send a congratulations message
         </mat-panel-description>
       </mat-expansion-panel-header>
-      <p>I'm visible because I am open</p>
+      <mat-form-field class="example-full-width">
+        <textarea [(ngModel)]="taComment" matInput placeholder="Leave a comment"></textarea>
+      </mat-form-field>
     </mat-expansion-panel> 
 
   </mat-accordion>
   <div class="center">
-    <button mat-button class="btn-submit" (click)="editando = !editando">Save</button>
+    <button mat-button class="btn-submit" (click)="editando = updateInfo()">Save</button>
     <button mat-button class="btn-submit" (click)="editando = !editando">Cancel</button>
   </div>
 </mat-grid-list>

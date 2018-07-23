@@ -17,6 +17,13 @@ app.use(function(req, res, next) {
     next();
 })
 
+function managerList(manager){
+    gerency = {
+        jis:['penguins','seals','tequila','saviors']
+    };
+    return gerency[manager];
+}
+
 function sendMail(to,subject,text,html){
     var transporter = nodemailer.createTransport({
         service: 'gmail',
@@ -298,20 +305,32 @@ app.post("/q", function (req, res) {
                 'error':"none"
             }
             break;
+        case 'updateEvent':
+        cloudant.db.event.then(r => {
+            r.forEach(x => {
+                if(x['_id'] == req.body['data']['_id']){
+                    x['messages'] = req.body['data']['messages'];
+                    cloudant.db.updateEvent(x);
+                }    
+            });
+            resp = {
+                error:"none"
+            }
+            cloudant.db.event = cloudant.db.Update('events');
+            res.send(resp);
+        })
+        break;
+        break;
         case 'events':
             cloudant.db.event.then(r => {
                 data = [];
                 r.forEach(x => {
                     //if custom is yes revew myself on custome list else revew manager and return events
-                    if(new Date(x.date).setHours(0,0,0,0) >= new Date().setHours(0,0,0,0)) 
+                    if(new Date(x.date).setHours(0,0,0,0) >= new Date().setHours(0,0,0,0)){
                         if(x.manager == "jis"){
                             data.push(x);
                         }
-                    else{
-                        //delete and update
-                        //cloudant.db.deleteEvent(x._rev,x._id);
-                    }
-                        
+                    }    
                 });
                 resp = {
                     data,
@@ -343,45 +362,104 @@ setInterval(function() {
     t1.setDate(t2.getDate() + 5);
     t1 = t1.toISOString().substring(0, 10);
     t2 = t2.toISOString().substring(0, 10);
-
     cloudant.db.log.then(r => {
         r.forEach(val=>{
-            if( val['config'] == 'true' ){
-                if( val['birthday'].substring(0, 10) == t1 ){
-                    cloudant.db.addEvent({
-                        manager:'jis',
-                        list:val['squad'],
-                        name:val['name'],
-                        type:'birthday',
-                        date:val['birthday'],
-                        custom:"no"
-                    });
-                    cloudant.db.event = cloudant.db.Update('events');
+            cloudant.db.event.then(ev => {
+                notexistbr = true;
+                notexistan = true;
+                ev.forEach(e=>{
+                    if(e['name'] == val['user'].split('@')[0]){
+                        if(e['type']=="birthday" || val['config'] == 'false' ){
+                            notexistbr = false;
+                            if (e['date'] != val['birthday']){
+                                notexistbr = true;
+                                cloudant.db.deleteEvent(e['_rev'],e['_id']);
+                            }
+                        }
+                        if(e['type']=="anniversary" || val['config'] == 'false'){
+                            notexistan = false;
+                            if (e['date'] != val['anniversary']){
+                                notexistbr = true;
+                                cloudant.db.deleteEvent(e['_rev'],e['_id']);
+                            }
+                        }
+                    }   
+                    if( e['date'].substring(0, 10) <= t2 && val['config'] == 'true' ){
+                        // send mail
+                        let comment = "";
+                        e['messages'].forEach(m=>{
+                            comment += "\n"+m['user']+":\n"+m['message'];
+                        });
+                        let aux = (e['type']=="anniversary")?'We are so proud to have you as part of our work family. We hope that you keep up the good work for many years to come!':'Wishing you much happiness on your special day. Have an unforgettable birthday';
+                        aux += ( comment.length > 0)?'\nsome coworkers share with you a congratulate message':'';
+                        comment = "<@"+e['name']+">, "+aux+comment;
+                        unirest.put("https://hooks.slack.com/services/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")
+                        .headers({'Content-type': 'application/json'})
+                        .send({ 
+                            "username": (e['list'])?e['list']:' your Squad' + " and tribiu",
+                            "icon_emoji": (e['type'] == "birthday")?":birthday:":":congapartyparrot-9224:",
+                            "text": comment
+                        })
+                        .end(function (response) { 
+                         });
+                        cloudant.db.deleteEvent(e['_rev'],e['_id']);
+                        cloudant.db.event = cloudant.db.Update("events");
+                        //sendMail(val['user'], "Congratulations","",formatMailMessage("Congratulations","<p class='sc'>happy birthday <p> "+val['name']+" we have a message for you","We wish you an amazing year that ends with accomplishing all the great goals <br> that you have set!","0"));
+                    }
+                });
+                if( val['config'] == 'true'){
+                    if( val['birthday'].substring(0, 10) >= t2 && val['birthday'].substring(0, 10) <= t1 && notexistbr ){
+                        cloudant.db.addEvent({
+                            manager:'jis', //change in a future
+                            list:val['squad'],
+                            name:val['user'].split('@')[0],
+                            type:'birthday',
+                            date:val['birthday'],
+                            custom:"no",
+                            messages:[]
+                        });
+                        //send link to mail
+                        cloudant.db.event = cloudant.db.Update('events');
+                        cloudant.db.log.then(usrList=>{
+                            ml = managerList('jis');
+                            usrList.forEach(usr=>{
+                                ml.forEach(msq => {
+                                    if(usr["squad"] == msq && usr["name"] != val['name'] ){
+                                        sendMail(usr['user'], "Someone's birthday is coming","",formatMailMessage("congratulate to "+val['name'],"<p class='sc'> Hi "+usr["name"]+"<p> "+val['name']+"'s birthday is coming, actually you can prepare messages to this day ","to see more dates memorable, go to app in https://ibmemories.w3ibm.mybluemix.net/","0"));
+                                    }
+                                });
+                            });
+                        });
+                    }
+                    if( val['anniversary'].substring(0, 10) >= t2 && val['anniversary'].substring(0, 10) <= t1 && notexistan){
+                        cloudant.db.addEvent({
+                            manager:'jis',
+                            list:val['squad'],
+                            name:val['user'].split('@')[0],
+                            type:'anniversary',
+                            date:val['anniversary'],
+                            custom:"no",
+                            messages:[]
+                        });
+                        cloudant.db.event = cloudant.db.Update('events');
+                        cloudant.db.log.then(usrList=>{
+                            ml = managerList('jis');
+                            usrList.forEach(usr=>{
+                                ml.forEach(msq => {
+                                    if(usr["squad"] == msq && usr["name"] != val['name'] ){
+                                        sendMail(val['user'], "Someone's anniversary on IBM is coming","",formatMailMessage("congratulate to "+val['name'],"<p class='sc'>Hi "+usr["name"]+"<p> "+val['name']+"'s anniversary on IBM is coming, actually you can prepare messages to this day ","to see more dates memorable, go to app in https://ibmemories.w3ibm.mybluemix.net/","0"));
+                                    }
+                                });
+                            });
+                        });
+                    }
                 }
-                if( val['anniversary'].substring(0, 10) == t1 ){
-                    cloudant.db.addEvent({
-                        manager:'jis',
-                        list:val['squad'],
-                        name:val['name'],
-                        type:'anniversary',
-                        date:val['anniversary'],
-                        custom:"no"
-                    });
-                    cloudant.db.event = cloudant.db.Update('events');
-                }
-                if( val['birthday'].substring(0, 10) == t2 ){
-                    //create event br
-                    //sendMail(val['user'], "Congratulations","",formatMailMessage("Congratulations","<p class='sc'>happy birthday <p> "+val['name']+" we have a message for you","We wish you an amazing year that ends with accomplishing all the great goals <br> that you have set!","0"));
-                }
-                if( val['anniversary'].substring(0, 10) == t2 ){
-                    //create event anv
-                    //sendMail(val['user'], "Congratulations","",formatMailMessage("Congratulations","<p class='sc'><p> "+val['name']+" we have a message for you","We wish you an amazing year that ends with accomplishing all the great goals <br> that you have set!","0"));
-                }
-            }
-        })
-    })
+            });
+        });
+    });
+    cloudant.db.event = cloudant.db.Update("events");
     //debug false
-},(true)?86400000:10000);
+},5000);
 
 //sendMail("berrospe.he@gmail.com","Congratulations","",formatMailMessage("Congratulations","<p class='sc'>happy Birthday<p> javier we have a message for you","We wish you an amazing year that ends with accomplishing all the great goals <br> that you have set!","0"));
 
