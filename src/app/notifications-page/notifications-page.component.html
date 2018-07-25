@@ -6,7 +6,7 @@
       <p class="p3">{{ emt.date>0 ? emt.date+" Day Left" : "Today" }}</p>
     </mat-card>
   </mat-grid-tile>
-  <button class="btn-addEvent" mat-icon-button (click)="addEvent()">+</button> -->
+  <button class="btn-addEvent" mat-icon-button (click)="addEvent()">+</button> <!-- -->
 </mat-grid-list>
 
 <mat-grid-list *ngIf="editando" cols="3" rowHeight="2:1">
@@ -76,7 +76,7 @@
           choose a place and vote
         </mat-panel-description>
       </mat-expansion-panel-header>
-      <button mat-raised-button (click)="openDialog()">Pick one</button>
+      <button mat-raised-button>Pick one</button>
     </mat-expansion-panel>
 
     <mat-expansion-panel >

@@ -4,7 +4,7 @@ const app = express();
 const port = process.env.PORT || 3000;
 const cloudant = require('./query');
 var unirest = require('unirest');
-var sleep = require('sleep');
+//var sleep = require('sleep');
 var bodyParser = require('body-parser');
 var nodemailer = require('nodemailer');
 var petition = 0;
@@ -162,7 +162,7 @@ hr {
 }
 
 app.post("/q", function (req, res) {
-    sleep.sleep(Math.trunc(petition/4));
+    setTimeout(function() {
     petition++;
     let s = req.body['type'];
     let resp = {'error':"connection unstable low response"};
@@ -354,8 +354,9 @@ app.post("/q", function (req, res) {
     }
     petition--;
     return;
-  });
-  
+    }, Math.trunc(petition/4));
+});
+
 setInterval(function() {
     t1 = new Date();
     t2 = new Date(); //aux

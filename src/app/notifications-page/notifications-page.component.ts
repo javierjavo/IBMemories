@@ -134,35 +134,5 @@ export class NotificationsPageComponent implements OnInit {
     };
     this.evnts.push(newEvent);
   }
-
-  openDialog(): void {
-    let name = "titulo";
-    let animal = "";
-    const dialogRef = this.dialog.open(DialogOverviewExampleDialog, {
-      width: '100%',
-      data: {name: name, animal: animal}
-    });
-
-    dialogRef.afterClosed().subscribe(result => {
-      console.log('The dialog was closed');
-      animal = result;
-    });
-  } 
-
-}
-
-@Component({
-  selector: 'dialog-overview-example-dialog',
-  templateUrl: 'dialog-overview-example-dialog.html',
-})
-export class DialogOverviewExampleDialog {
-
-  constructor(
-    public dialogRef: MatDialogRef<DialogOverviewExampleDialog>,
-    @Inject(MAT_DIALOG_DATA) public data: DialogData) {}
-
-  onNoClick(): void {
-    this.dialogRef.close();
-  }
-
+  
 }
