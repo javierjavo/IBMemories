@@ -12,6 +12,9 @@ import { MatSnackBar, throwMatDuplicatedDrawerError } from '@angular/material';
   styleUrls: ['./profile-page.component.css']
 })
 export class ProfilePageComponent implements OnInit {
+  panelOpenState;
+  pswdold = '';
+  pswdnew='';
   sSquad = '';
   name = '';
   lastname = '';
@@ -62,7 +65,12 @@ export class ProfilePageComponent implements OnInit {
   }
   
   messaje(){
-    let params = {
+    let params = (this.panelOpenState)?{
+      type: 'update',
+      mail: this.cookie.get('login'),
+      oldpass: this.pswdold,
+      newpass: this.pswdnew
+    }:{
       type: 'update',
       squad: this.sSquad,
       name: this.name,
@@ -71,7 +79,7 @@ export class ProfilePageComponent implements OnInit {
       anniversary: this.IBM_date,
       config: this.config,
       mail: this.cookie.get('login')
-    }
+    };
     this.http.post('http://localhost:3000/q',params)
     .subscribe(
       res => {

@@ -1,5 +1,4 @@
+--- 
 applications:
-   name: IBMemories
-   random-route: false
+ - name: IBMemories
    memory: 256M
-   buildpack: nodejs_buildpack

@@ -36,5 +36,25 @@
         <mat-datepicker #picker2 startView="year" ></mat-datepicker>
     </mat-form-field> <br>
     <mat-slide-toggle color="primary" [(ngModel)]="config">Share my information to my squad</mat-slide-toggle>
+    <mat-accordion>
+            <mat-expansion-panel (opened)="panelOpenState = true" (closed)="panelOpenState = false">
+              <mat-expansion-panel-header>
+                <mat-panel-title>
+                  Change password
+                </mat-panel-title>
+                <mat-panel-description>
+                  put your password and change it
+                </mat-panel-description>
+              </mat-expansion-panel-header>
+          
+              <mat-form-field>
+                <input matInput type="password" [(ngModel)]="pswdold" placeholder="last password">
+              </mat-form-field> <br>
+              <mat-form-field>
+                <input matInput type="password" [(ngModel)]="pswdnew" placeholder="new password">
+              </mat-form-field>
+            </mat-expansion-panel>
+            
+          </mat-accordion>
     <button mat-button class="btn-submit" (click)="messaje()">Save</button>
 </div>

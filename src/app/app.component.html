@@ -81,7 +81,7 @@
                 <form [formGroup]="firstFormGroup">
                 <ng-template matStepLabel>Fill out your name</ng-template>
                 <mat-form-field>
-                    <input matInput placeholder="mail" formControLName="firstCtrl" [(ngModel)]="user" required>
+                    <input matInput placeholder="mail" formControLName="firstCtrl" [(ngModel)]="user" [ngModelOptions]="{standalone: true}"required>
                 </mat-form-field>
                 <div>
                     <button mat-button matStepperNext>Next</button>
@@ -95,7 +95,7 @@
             password
             <div>
             <button mat-button matStepperPrevious>Back</button>
-            <button mat-button (click)="recoveryPasswd() && forgot=!forgot">Send my password</button>
+            <button mat-button (click)="recoveryPasswd(userf) && forgot=!forgot">Send my password</button>
             </div>
         </mat-step>
         </mat-horizontal-stepper>

@@ -243,17 +243,40 @@ app.post("/q", function (req, res) {
                 }   
                 r.forEach(val=>{
                     if(val['user']==req.body['mail']){
-                        let data = {
-                            'id':val['_id'],
-                            'user':val['user'],
-                            'passwd':val['passwd'],
-                            'squad':req.body['squad'],
-                            'name':req.body['name'],
-                            'Lname':req.body['Lname'],
-                            'birthday':req.body['birthday'],
-                            'anniversary':req.body['anniversary'],
-                            'config':req.body['config'].toString()
-                        };
+                        let data = {};
+                        if(!req.body['oldpass'])
+                            data = {
+                                'id':val['_id'],
+                                'user':val['user'],
+                                'passwd':val['passwd'],
+                                'squad':req.body['squad'],
+                                'name':req.body['name'],
+                                'Lname':req.body['Lname'],
+                                'birthday':req.body['birthday'],
+                                'anniversary':req.body['anniversary'],
+                                'config':req.body['config'].toString()
+                            };
+                        else if( req.body['oldpass']==val['passwd'] && req.body['newpass']!='' )
+                            data = {
+                                'id':val['_id'],
+                                'user':val['user'],
+                                'passwd':req.body['newpass'],
+                                'squad':val['squad'],
+                                'name':val['name'],
+                                'Lname':val['Lname'],
+                                'birthday':val['birthday'],
+                                'anniversary':val['anniversary'],
+                                'config':val['config'].toString()
+                            };
+                        else{
+                            resp = {
+                                'status':( req.body['oldpass']==val['passwd'] )? "please put an password":"the old password is not correct",
+                                'error':"none"
+                            }
+                            res.send(resp);
+                            petition--;
+                            return;
+                        }
                         cloudant.db.updateProfile(val['_rev'],data);
                         resp = {
                             'status':"update successful",
@@ -319,7 +342,6 @@ app.post("/q", function (req, res) {
             cloudant.db.event = cloudant.db.Update('events');
             res.send(resp);
         })
-        break;
         break;
         case 'events':
             cloudant.db.event.then(r => {
