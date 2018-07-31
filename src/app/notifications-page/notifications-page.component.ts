@@ -38,12 +38,13 @@ export class NotificationsPageComponent implements OnInit {
     this.http.post('http://localhost:3000/q',params)
     .subscribe( res => {
       if (res['error'] == "none"){
-        let aux = new Date().toISOString().substring(0, 10);
+        let aux = new Date().toISOString().substring(5, 10);
         let t1 = new Date(aux).getTime();
         this.evnts = res['data'];
         this.evnts.forEach(x=>{
-          let t2 = new Date(x.date.substring(0, 10)).getTime();
-          x.date = -1*((t1-t2)/(1000*60*60*24));
+          let t2 = new Date(x.date.substring(5, 10)).getTime();
+          x.date = ((t1-t2)/(1000*60*60*24));
+          x.date = Math.abs(x.date);
         });
         this.evnts.sort((x,y)=> x.date > y.date?1:0 );
       }

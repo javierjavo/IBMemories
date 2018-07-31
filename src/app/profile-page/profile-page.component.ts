@@ -23,7 +23,10 @@ export class ProfilePageComponent implements OnInit {
   birthday;
   myControl = new FormControl();
   squads = [
-    {name:'One',tribu:"one"},{name:'Two',tribu:"Two"}, {name:'Three',tribu:"Three"}
+    {name:'penguins',tribu:"jis"},
+    {name:'seals',tribu:"jis"},
+    {name:'tequila',tribu:"jis"},
+    {name:'saviors',tribu:"xsaviors"}
   ]; //colect from db2 by python with http request
   filteredOptions: Observable<any[]>;
 
@@ -39,6 +42,7 @@ export class ProfilePageComponent implements OnInit {
     .subscribe(
       res => {
         if (res['error'] == "none"){
+          this.squads = res['squadList'];
           this.sSquad = res['squad'];
           this.name = res['name'];
           this.lastname = res['Lname'];

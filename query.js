@@ -55,7 +55,7 @@ class CloudantConnect {
             custom:d['custom'],
             messages:d["messages"]
         })
-        .end(function (response) { });
+        .end(function (response){ });
     }
 
     deleteEvent(rev,id){

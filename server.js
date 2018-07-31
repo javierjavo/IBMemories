@@ -19,8 +19,17 @@ app.use(function(req, res, next) {
 
 function managerList(manager){
     gerency = {
-        jis:['penguins','seals','tequila','saviors']
+        jis:['penguins','seals','tequila'],
+        james:['xsaviors']
     };
+    if (manager == "getAll"){
+        let list = [];
+        for(var x in gerency){
+            for( i in gerency[x] )
+                list.push({name:gerency[x][i],tribu:x});
+        }
+        return list;
+    }
     return gerency[manager];
 }
 
@@ -297,8 +306,10 @@ app.post("/q", function (req, res) {
                     'error':"can't connect to db"
                 }   
                 r.forEach(val=>{
+                    let squadList = managerList('getAll');
                     if(val['user']==req.body['mail']){
                         resp = {
+                            "squadList":squadList,
                             'squad':val['squad'],
                             'name':val['name'],
                             'Lname':val['Lname'],
@@ -406,7 +417,7 @@ setInterval(function() {
                                 cloudant.db.deleteEvent(e['_rev'],e['_id']);
                             }
                         }
-                    }   
+                    }
                     if( e['date'].substring(0, 10) <= t2 && val['config'] == 'true' ){
                         // send mail
                         let comment = "";
@@ -431,7 +442,9 @@ setInterval(function() {
                     }
                 });
                 if( val['config'] == 'true'){
-                    if( val['birthday'].substring(0, 10) >= t2 && val['birthday'].substring(0, 10) <= t1 && notexistbr ){
+                    let date = t2.substring(0, 5)+val['birthday'].substring(5, 10);
+                    console.log(date ,t2 , t1);
+                    if( date >= t2 && date <= t1 && notexistbr ){
                         cloudant.db.addEvent({
                             manager:'jis', //change in a future
                             list:val['squad'],
@@ -454,7 +467,8 @@ setInterval(function() {
                             });
                         });
                     }
-                    if( val['anniversary'].substring(0, 10) >= t2 && val['anniversary'].substring(0, 10) <= t1 && notexistan){
+                    date = t2.substring(0, 5)+val['anniversary'].substring(5, 10);
+                    if( date >= t2 && date <= t1 && notexistan){
                         cloudant.db.addEvent({
                             manager:'jis',
                             list:val['squad'],
@@ -482,7 +496,7 @@ setInterval(function() {
     });
     cloudant.db.event = cloudant.db.Update("events");
     //debug false
-},5000);
+},1000);
 
 //sendMail("berrospe.he@gmail.com","Congratulations","",formatMailMessage("Congratulations","<p class='sc'>happy Birthday<p> javier we have a message for you","We wish you an amazing year that ends with accomplishing all the great goals <br> that you have set!","0"));
 
