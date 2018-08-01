@@ -12,7 +12,7 @@ import { MatSnackBar, throwMatDuplicatedDrawerError } from '@angular/material';
   styleUrls: ['./profile-page.component.css']
 })
 export class ProfilePageComponent implements OnInit {
-  panelOpenState;
+  panelOpenState = false;
   pswdold = '';
   pswdnew='';
   sSquad = '';
@@ -67,7 +67,13 @@ export class ProfilePageComponent implements OnInit {
     const filterValue = value.toLowerCase();
     return this.squads.filter(option => option.name.toLowerCase().indexOf(filterValue) === 0);
   }
-  
+
+  getClass(i){
+    if(i == "btn"){
+      return (this.panelOpenState)? "btn-submit-translated" : "btn-submit" ;
+    }
+  }
+
   messaje(){
     let params = (this.panelOpenState)?{
       type: 'update',

@@ -1,12 +1,38 @@
 .mainContainer{
     position: relative;
-    margin: 5%;
-    padding: 5%;
+    width: 100%;
+    height: 93vh;
+    background-color: #7a7a7a18;
+}
+.mainContainer-click{
+    position: relative;
+    width: 100%;
+    height: 93vh;
+    background-color: #0000004b;
+}
+.Container{
+    position: relative;
+    padding-top: 5%;
+    margin-left: 5%;
+    padding-left: 5%;
     left: 10%;
-    top: 0%;
+    top: 80px;
     background-color: #f8fcff;
-    height: 85vh;
+    height: 70vh;
     width: 50vw;
+    z-index: 10;
+}
+.Container-click{
+    position: relative;
+    padding-top: 5%;
+    margin-left: 5%;
+    padding-left: 5%;
+    left: 10%;
+    top: 80px;
+    height: 70vh;
+    width: 50vw;
+    background-color: #0000004b;
+    z-index: 5;
 }
 
 .date{
@@ -15,12 +41,36 @@
 }
 
 .btn-submit{
+    position: relative;
     float: right;
+    top: -90px;
     right: 15%;
     width: 65px;
     height: 40px;
     border-radius: 60px;
     background-color: rgb(163, 227, 230);
+}
+
+mat-expansion-panel{
+    position: relative;
+    width: 90%;
+}
+.normal{
+    position: relative;
+    top: 5px;
+    z-index: 10;
+}
+
+.btn-submit-translated{
+    position: absolute;
+    float: right;
+    top: 85%;
+    right: 15%;
+    width: 65px;
+    height: 40px;
+    border-radius: 60px;
+    background-color: rgb(163, 227, 230);
+    
 }
 
 .Tribu{

@@ -358,12 +358,9 @@ app.post("/q", function (req, res) {
             cloudant.db.event.then(r => {
                 data = [];
                 r.forEach(x => {
-                    //if custom is yes revew myself on custome list else revew manager and return events
-                    if(new Date(x.date).setHours(0,0,0,0) >= new Date().setHours(0,0,0,0)){
-                        if(x.manager == "jis"){
-                            data.push(x);
-                        }
-                    }    
+                    if(x.manager == "jis"){
+                        data.push(x);
+                    }
                 });
                 resp = {
                     data,
@@ -425,8 +422,8 @@ setInterval(function() {
                             comment += "\n"+m['user']+":\n"+m['message'];
                         });
                         let aux = (e['type']=="anniversary")?'We are so proud to have you as part of our work family. We hope that you keep up the good work for many years to come!':'Wishing you much happiness on your special day. Have an unforgettable birthday';
-                        aux += ( comment.length > 0)?'\nsome coworkers share with you a congratulate message':'';
-                        comment = "<@"+e['name']+">, "+aux+comment;
+                        aux += ( comment.length > 1)?'\nsome coworkers share with you a congratulate message':'';
+                        comment = aux+comment;
                         unirest.put("https://hooks.slack.com/services/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")
                         .headers({'Content-type': 'application/json'})
                         .send({ 
@@ -443,7 +440,6 @@ setInterval(function() {
                 });
                 if( val['config'] == 'true'){
                     let date = t2.substring(0, 5)+val['birthday'].substring(5, 10);
-                    console.log(date ,t2 , t1);
                     if( date >= t2 && date <= t1 && notexistbr ){
                         cloudant.db.addEvent({
                             manager:'jis', //change in a future
@@ -461,7 +457,7 @@ setInterval(function() {
                             usrList.forEach(usr=>{
                                 ml.forEach(msq => {
                                     if(usr["squad"] == msq && usr["name"] != val['name'] ){
-                                        sendMail(usr['user'], "Someone's birthday is coming","",formatMailMessage("congratulate to "+val['name'],"<p class='sc'> Hi "+usr["name"]+"<p> "+val['name']+"'s birthday is coming, actually you can prepare messages to this day ","to see more dates memorable, go to app in https://ibmemories.w3ibm.mybluemix.net/","0"));
+                                        sendMail(usr['user'], "Someone's birthday is coming","",formatMailMessage("congratulate to "+val['name'],"<p class='sc'> Hi "+usr["name"]+"<p> "+val['name']+"'s birthday is coming, actually you can prepare messages to this day ","to see more dates memorable, go to app","0"));
                                     }
                                 });
                             });
@@ -484,7 +480,7 @@ setInterval(function() {
                             usrList.forEach(usr=>{
                                 ml.forEach(msq => {
                                     if(usr["squad"] == msq && usr["name"] != val['name'] ){
-                                        sendMail(val['user'], "Someone's anniversary on IBM is coming","",formatMailMessage("congratulate to "+val['name'],"<p class='sc'>Hi "+usr["name"]+"<p> "+val['name']+"'s anniversary on IBM is coming, actually you can prepare messages to this day ","to see more dates memorable, go to app in https://ibmemories.w3ibm.mybluemix.net/","0"));
+                                        sendMail(val['user'], "Someone's anniversary on IBM is coming","",formatMailMessage("congratulate to "+val['name'],"<p class='sc'>Hi "+usr["name"]+"<p> "+val['name']+"'s anniversary on IBM is coming, actually you can prepare messages to this day ","to see more dates memorable, go to app","0"));
                                     }
                                 });
                             });

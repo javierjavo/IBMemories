@@ -1,60 +1,61 @@
-<div class="mainContainer">
-    <form class="example-form">
-        <mat-form-field class="example-full-width">
-            <input type="text" placeholder="Squad" aria-label="Number" matInput [formControl]="myControl" [matAutocomplete]="auto" [(ngModel)]="sSquad">
-            <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete">
-            <mat-option *ngFor="let option of filteredOptions | async" [value]="option.name">
-                <B class="Squad">{{option.name}}</B><p class="Tribu">{{option.tribu}}</p>
-            </mat-option>
-            </mat-autocomplete>
-        </mat-form-field>
-    </form>
-    
-    <mat-form-field class="date example-form-field">
-        <input matInput type="text" placeholder="First name" [(ngModel)]="name">
-        <button mat-button *ngIf="name" matSuffix mat-icon-button aria-label="Clear" (click)="name=''">
-            <mat-icon>close</mat-icon>
-        </button>
-    </mat-form-field> <br>
+<div [ngClass]="panelOpenState?'mainContainer-click':'mainContainer'">
+    <div [ngClass]="panelOpenState?'Container-click':'Container'">
+        <form class="example-form">
+            <mat-form-field class="example-full-width">
+                <input type="text" placeholder="Squad" aria-label="Number" matInput [formControl]="myControl" [matAutocomplete]="auto" [(ngModel)]="sSquad">
+                <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete">
+                <mat-option *ngFor="let option of filteredOptions | async" [value]="option.name">
+                    <B class="Squad">{{option.name}}</B><p class="Tribu">{{option.tribu}}</p>
+                </mat-option>
+                </mat-autocomplete>
+            </mat-form-field>
+        </form>
+        
+        <mat-form-field class="date example-form-field">
+            <input matInput type="text" placeholder="First name" [(ngModel)]="name">
+            <button mat-button *ngIf="name" matSuffix mat-icon-button aria-label="Clear" (click)="name=''">
+                <mat-icon>close</mat-icon>
+            </button>
+        </mat-form-field> <br>
 
-    <mat-form-field class="date example-form-field">
-        <input matInput type="text" placeholder="Last Name" [(ngModel)]="lastname">
-        <button mat-button *ngIf="lastname" matSuffix mat-icon-button aria-label="Clear" (click)="lastname=''">
-            <mat-icon>close</mat-icon>
-        </button>
-    </mat-form-field> <br>
-    
-    <mat-form-field class="date" align="center">
-        <input matInput [matDatepicker]="picker1" placeholder="when did you start you start your adventure in IBM?" [(ngModel)]="IBM_date" >
-        <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
-        <mat-datepicker #picker1 startView="year" ></mat-datepicker>
-    </mat-form-field> <br>
+        <mat-form-field class="date example-form-field">
+            <input matInput type="text" placeholder="Last Name" [(ngModel)]="lastname">
+            <button mat-button *ngIf="lastname" matSuffix mat-icon-button aria-label="Clear" (click)="lastname=''">
+                <mat-icon>close</mat-icon>
+            </button>
+        </mat-form-field> <br>
+        
+        <mat-form-field class="date" align="center">
+            <input matInput [matDatepicker]="picker1" placeholder="when did you start you start your adventure in IBM?" [(ngModel)]="IBM_date" >
+            <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
+            <mat-datepicker #picker1 startView="year" ></mat-datepicker>
+        </mat-form-field> <br>
 
-    <mat-form-field class="date">
-        <input matInput [matDatepicker]="picker2" placeholder="when is your birthday" [(ngModel)]="birthday">
-        <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
-        <mat-datepicker #picker2 startView="year" ></mat-datepicker>
-    </mat-form-field> <br>
-    <mat-slide-toggle color="primary" [(ngModel)]="config">Share my information to my squad</mat-slide-toggle>
-    <mat-accordion>
+        <mat-form-field class="date">
+            <input matInput [matDatepicker]="picker2" placeholder="when is your birthday" [(ngModel)]="birthday">
+            <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
+            <mat-datepicker #picker2 startView="year" ></mat-datepicker>
+        </mat-form-field> <br>
+        <mat-slide-toggle color="primary" [(ngModel)]="config">Share my information to my squad</mat-slide-toggle>
+        <mat-accordion class="normal">
             <mat-expansion-panel (opened)="panelOpenState = true" (closed)="panelOpenState = false">
-              <mat-expansion-panel-header>
+                <mat-expansion-panel-header>
                 <mat-panel-title>
-                  Change password
+                    Change password click here
                 </mat-panel-title>
                 <mat-panel-description>
-                  put your password and change it
+                    put your old password and change it
                 </mat-panel-description>
-              </mat-expansion-panel-header>
-          
-              <mat-form-field>
-                <input matInput type="password" [(ngModel)]="pswdold" placeholder="last password">
-              </mat-form-field> <br>
-              <mat-form-field>
-                <input matInput type="password" [(ngModel)]="pswdnew" placeholder="new password">
-              </mat-form-field>
-            </mat-expansion-panel>
+                </mat-expansion-panel-header>
             
-          </mat-accordion>
-    <button mat-button class="btn-submit" (click)="messaje()">Save</button>
+                <mat-form-field>
+                <input matInput type="password" [(ngModel)]="pswdold" placeholder="last password">
+                </mat-form-field> <br>
+                <mat-form-field>
+                <input matInput type="password" [(ngModel)]="pswdnew" placeholder="new password">
+                </mat-form-field>
+            </mat-expansion-panel>
+        </mat-accordion>
+        <button mat-button [ngClass]="panelOpenState?'btn-submit-translated':'btn-submit'" (click)="messaje()">Save</button>
+    </div>
 </div>

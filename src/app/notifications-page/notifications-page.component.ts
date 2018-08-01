@@ -40,6 +40,7 @@ export class NotificationsPageComponent implements OnInit {
       if (res['error'] == "none"){
         let aux = new Date().toISOString().substring(5, 10);
         let t1 = new Date(aux).getTime();
+        console.log(res['data']);
         this.evnts = res['data'];
         this.evnts.forEach(x=>{
           let t2 = new Date(x.date.substring(5, 10)).getTime();
